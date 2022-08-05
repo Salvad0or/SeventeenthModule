@@ -4,9 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SeventeenthModule"
+        xmlns:vm="clr-namespace:SeventeenthModule.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <Menu DockPanel.Dock ="Top">
+            <MenuItem Header="15"> 
+                
+            </MenuItem>
+        </Menu>
+        <TabControl DockPanel.Dock="Top" Margin="3">
+            <TabItem Header="100000">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+                
+            </TabItem>
+        </TabControl>
+    </DockPanel>
 </Window>
