@@ -69,7 +69,93 @@
                     </TabItem>
                     
                 </TabControl>
+                
+                
+                
             </TabItem>
+
+            <TabItem Header="Работа с клиентами">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+
+                        <GroupBox Header="Изменение данных клиента"
+                                  Margin="5">
+                            <StackPanel>
+                                <TextBlock Text="Введите Id клиента, данные которого подлежат изменению :"/>
+                                <TextBox Width="150" 
+                                     HorizontalAlignment="Left"
+                                     Margin="0 5"/>
+
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Grid.Column="1"
+                                  Grid.Row="1"
+                              Header="Удалить клиента">
+                            <StackPanel>
+                                <TextBlock Text="Введите ID клиента которого нужно удалить : "/>
+                                <TextBox Width="150" 
+                                     HorizontalAlignment="Left"
+                                     Margin="0 5"/>
+                            </StackPanel>
+
+                        </GroupBox>
+
+                    </Grid>
+
+
+                        <GroupBox Grid.Column="0"
+                              Header="Добавить клиента"
+                              Margin="4">
+                        <StackPanel>
+                            <TextBlock Text="Имя: "/>
+                            <TextBox Width="150"
+                                     HorizontalAlignment="Left"
+                                     Margin="0 5"/>
+                            
+                            <TextBlock Text="Фамилия: "/>
+                            <TextBox Width="150"
+                                     HorizontalAlignment="Left"
+                                     Margin="0 5"/>
+
+                            <TextBlock Text="Отчество: "/>
+                            <TextBox Width="150"
+                                     HorizontalAlignment="Left"
+                                     Margin="0 5"/>
+
+                            <TextBlock Text="Номер телефона: "/>
+                            <TextBox Width="150"
+                                     HorizontalAlignment="Left"
+                                     Margin="0 5"/>
+
+                            <TextBlock Text="E-mail: "/>
+                            <TextBox Width="150"
+                                     HorizontalAlignment="Left"
+                                     Margin="0 5"/>
+
+
+                        </StackPanel>
+
+                    </GroupBox>
+
+                   
+
+                </Grid>
+
+                
+                
+            </TabItem>
+            
         </TabControl>
     </DockPanel>
 </Window>
