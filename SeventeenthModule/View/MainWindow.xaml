@@ -17,14 +17,58 @@
             </MenuItem>
         </Menu>
         <TabControl DockPanel.Dock="Top" Margin="3">
-            <TabItem Header="100000">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                </Grid>
+            <TabItem Header="RialShop">
                 
+                <TabControl Margin="7">
+                    
+                    <TabItem Header="Клиенты">
+                        <DataGrid ItemsSource="{Binding DataBase.Tables[0]}"
+                                  AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                                <DataGridTextColumn Header="Имя" Binding="{Binding Fname}"/>
+                                <DataGridTextColumn Header="Фамилия" Binding="{Binding Lname}"/>
+                                <DataGridTextColumn Header="Отчество" Binding="{Binding Pname}"/>
+                                <DataGridTextColumn Header="E-mail" Binding="{Binding Emai}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+
+                    <TabItem Header="Заказы">
+                        <DataGrid ItemsSource="{Binding DataBase.Tables[1]}"
+                                  AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Id заказа" Binding="{Binding Id}"/>
+                                <DataGridTextColumn Header="Дата" Binding="{Binding Date}"/>
+                                <DataGridTextColumn Header="Id продукта" Binding="{Binding ProductId}"/>
+                                <DataGridTextColumn Header="Id клиента" Binding="{Binding Clientid}"/>
+                                <DataGridTextColumn Header="Комментарий" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+
+                    <TabItem Header="Список товаров">
+                        <DataGrid ItemsSource="{Binding DataBase.Tables[2]}"
+                                  AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                                <DataGridTextColumn Header="Наименование" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Артикул" Binding="{Binding Article}"
+                                                    Width="75"/>
+                                <DataGridTextColumn Header="Фирма производитель" Binding="{Binding Firm}"
+                                                    Width="150"/>
+                                <DataGridTextColumn Header="Категория" Binding="{Binding ProductCategory}"
+                                                    Width="100"/>
+                                <DataGridTextColumn Header="Вес" Binding="{Binding Weight}"
+                                                    Width="80"/>
+                                <DataGridTextColumn Header="Цена" Binding="{Binding Price}"
+                                                    Width="*"/>
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                    
+                </TabControl>
             </TabItem>
         </TabControl>
     </DockPanel>

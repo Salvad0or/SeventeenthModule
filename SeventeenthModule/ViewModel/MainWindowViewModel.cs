@@ -1,30 +1,42 @@
-﻿using SeventeenthModule.ViewModel.Base;
+﻿using SeventeenthModule.Models;
+using SeventeenthModule.ViewModel.Base;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SeventeenthModule.ViewModel
 {
     internal class MainWindowViewModel : ViewModels
     {
-        private string myVar ="123";
+        private DataSet _tables;
 
-        public string MyProperty 
+        public DataSet DataBase
         {
-            get { return myVar; }
+            get { return _tables; }
             set 
-
             {
-                if (Equals(myVar, value)) return;
-
-                myVar = value;
-
+                if (Equals(_tables, value)) return;
+                _tables = value;
                 OnPropertyChanged();
-            
+                
             }
         }
+
+        public DataTable Table0 { get; set; }
+
+
+
+        #region Конструктор
+        public MainWindowViewModel()
+        {
+            DataWorker dataWorker = new DataWorker();
+            DataBase = dataWorker.DataSet;
+        }
+        #endregion
 
     }
 }
