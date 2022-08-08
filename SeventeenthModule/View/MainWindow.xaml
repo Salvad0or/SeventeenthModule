@@ -22,13 +22,14 @@
                 <TabControl Margin="7">
                     
                     <TabItem Header="Клиенты">
-                        <DataGrid ItemsSource="{Binding DataBase.Tables[0]}"
+                        <DataGrid ItemsSource="{Binding ClientsTable}"
                                   AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                                 <DataGridTextColumn Header="Имя" Binding="{Binding Fname}"/>
                                 <DataGridTextColumn Header="Фамилия" Binding="{Binding Lname}"/>
                                 <DataGridTextColumn Header="Отчество" Binding="{Binding Pname}"/>
+                                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
                                 <DataGridTextColumn Header="E-mail" Binding="{Binding Emai}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
@@ -121,27 +122,40 @@
                             <TextBlock Text="Имя: "/>
                             <TextBox Width="150"
                                      HorizontalAlignment="Left"
-                                     Margin="0 5"/>
+                                     Margin="0 5"
+                                     Text="{Binding Fname, UpdateSourceTrigger=PropertyChanged}"/>
                             
                             <TextBlock Text="Фамилия: "/>
                             <TextBox Width="150"
                                      HorizontalAlignment="Left"
-                                     Margin="0 5"/>
+                                     Margin="0 5"
+                                     Text="{Binding Lname, UpdateSourceTrigger=PropertyChanged}"/>
 
                             <TextBlock Text="Отчество: "/>
                             <TextBox Width="150"
                                      HorizontalAlignment="Left"
-                                     Margin="0 5"/>
+                                     Margin="0 5"
+                                     Text="{Binding Pname, UpdateSourceTrigger=PropertyChanged}"/>
 
                             <TextBlock Text="Номер телефона: "/>
                             <TextBox Width="150"
                                      HorizontalAlignment="Left"
-                                     Margin="0 5"/>
+                                     Margin="0 5"
+                                     Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
+
 
                             <TextBlock Text="E-mail: "/>
                             <TextBox Width="150"
                                      HorizontalAlignment="Left"
-                                     Margin="0 5"/>
+                                     Margin="0 5"
+                                     Text="{Binding Emai, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <Button Content="Добавить"
+                                    Width="150"
+                                    Height="25"
+                                    Margin="0 9"
+                                    HorizontalAlignment="Left"
+                                    Command="{Binding AddsClientCommand}"/>
 
 
                         </StackPanel>

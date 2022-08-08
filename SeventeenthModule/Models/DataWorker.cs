@@ -10,7 +10,7 @@ namespace SeventeenthModule.Models
 {
     internal class DataWorker
     {
-        SqlConnectionStringBuilder ConnectionString { get; init; }
+        protected SqlConnectionStringBuilder ConnectionString { get; init; }
 
         SqlDataAdapter _dataAdapter;
 
@@ -22,13 +22,6 @@ namespace SeventeenthModule.Models
             private set { _dataSet = value; }
         }
 
-        public SqlDataAdapter DataAdapter
-        {
-            get => _dataAdapter;
-            private set => _dataAdapter = value;
-        }
-
-       
 
         public DataWorker()
         {
@@ -39,18 +32,18 @@ namespace SeventeenthModule.Models
                 Pooling = true
             };
 
-            string command = "SELECT * FROM Clients";
-
             string[] commands =
                 {
                 "SELECT * FROM Clients",
                 "SELECT * FROM Orders",
                 "SELECT * FROM Products"
-                };
-            
+                };           
 
             using (SqlConnection sqlConnection = new SqlConnection(ConnectionString.ToString()))
             {
+
+                sqlConnection.Open();
+
                 DataSet = new DataSet();
 
                 DataSet.Tables.Add("Clients");
@@ -59,11 +52,11 @@ namespace SeventeenthModule.Models
 
                 for (int i = 0; i < 3; i++)
                 {
-                    DataAdapter = new SqlDataAdapter(commands[i], sqlConnection);
+                    SqlDataAdapter DataAdapter = new SqlDataAdapter(commands[i], sqlConnection);
                     DataAdapter.Fill(DataSet.Tables[i]);                  
                 }       
             }
         }
-        //Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Саша\ITVDN2db.mdf;Integrated Security=True;Connect Timeout=30
+        
     }
 }
