@@ -12,17 +12,17 @@
     </Window.DataContext>
     <DockPanel>
         <Menu DockPanel.Dock ="Top">
-            <MenuItem Header="15"> 
-                
+            <MenuItem Header="15">
+
             </MenuItem>
         </Menu>
         <TabControl DockPanel.Dock="Top" Margin="3">
             <TabItem Header="RialShop">
-                
+
                 <TabControl Margin="7">
-                    
+
                     <TabItem Header="Клиенты">
-                        <DataGrid ItemsSource="{Binding ClientsTable}"
+                        <DataGrid ItemsSource="{Binding DataBase.Tables[0]}"
                                   AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
@@ -68,11 +68,11 @@
                             </DataGrid.Columns>
                         </DataGrid>
                     </TabItem>
-                    
+
                 </TabControl>
-                
-                
-                
+
+
+
             </TabItem>
 
             <TabItem Header="Работа с клиентами">
@@ -83,39 +83,127 @@
                     </Grid.ColumnDefinitions>
 
                     <Grid Grid.Column="1">
+
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition Height="130*"/>
+                            <RowDefinition Height="61*" />
                         </Grid.RowDefinitions>
 
 
                         <GroupBox Header="Изменение данных клиента"
-                                  Margin="5">
-                            <StackPanel>
-                                <TextBlock Text="Введите Id клиента, данные которого подлежат изменению :"/>
-                                <TextBox Width="150" 
+                                  Margin="5,5,5,5"
+                                  Grid.Row="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="179*"></ColumnDefinition>
+                                    <ColumnDefinition Width="193*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="63*"/>
+                                    <RowDefinition Height="164*"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.ColumnSpan="2" 
+                                            Grid.Row="0">
+
+                                    <GroupBox Header="Введите ID клиента">
+
+
+                                        <StackPanel Orientation ="Horizontal" Height="26">
+                                            <TextBox Width="150" 
+                                                     HorizontalAlignment="Left"
+                                                     Margin="5 5"
+                                                     Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                                            <Button Content="Получить данные"
+                                            Margin="15 0"
+                                            Height="20"
+                                            Command="{Binding SearchClientByIdForEditingCommand}"/>
+
+                                        </StackPanel>
+                                    </GroupBox>
+
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1" Margin="0,1,0,0">
+                                    <TextBlock Text="Имя: "/>
+                                    <TextBox Width="150"
                                      HorizontalAlignment="Left"
-                                     Margin="0 5"/>
+                                     Margin="0 2"
+                                     Text="{Binding SqlClient.Fname, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                    <TextBlock Text="Фамилия: "/>
+                                    <TextBox Width="150"
+                                     HorizontalAlignment="Left"
+                                     Margin="0 2"
+                                     Text="{Binding SqlClient.Lname, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                    <TextBlock Text="Отчество: "/>
+                                    <TextBox Width="150"
+                                     HorizontalAlignment="Left"
+                                     Margin="0 2"
+                                     Text="{Binding SqlClient.Pname, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="1" Margin="0,1,0,0">
+
+                                    <TextBlock Text="Номер телефона: "/>
+                                    <TextBox Width="150"
+                                     HorizontalAlignment="Left"
+                                     Margin="0 2"
+                                     Text="{Binding SqlClient.Phone, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                                    <TextBlock Text="E-mail: "/>
+                                    <TextBox Width="150"
+                                     HorizontalAlignment="Left"
+                                     Margin="0 2"
+                                     Text="{Binding SqlClient.Emai, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                    <Button Content="Изменить"
+                                    Width="150"
+                                    Height="25"
+                                    Margin="0 16"
+                                    HorizontalAlignment="Left"
+                                    Command="{Binding EditClientDataCommand}"/>
+
+                                </StackPanel>
+
+                            </Grid>
+
+                        </GroupBox>
+
+                        <GroupBox Header="Удалить клиента" Margin="0,260,0,4" Grid.RowSpan="2">
+                            <StackPanel Orientation="Horizontal">
+                                
+                                <TextBlock Text="Введите Id: " Height="20"/>
+                                
+                                <TextBox Height="20"
+                                         Width="100"
+                                         Margin="5 0"
+                                         Text="{Binding DeleteId, UpdateSourceTrigger=PropertyChanged}"/>
+                                
+                                <Button Content="Удалить"
+                                        Height="20"
+                                        Width="75"
+                                        Margin="5 0"
+                                        Command="{Binding DeleteClientCommand}"/>
 
                             </StackPanel>
                         </GroupBox>
 
-                        <GroupBox Grid.Column="1"
-                                  Grid.Row="1"
-                              Header="Удалить клиента">
-                            <StackPanel>
-                                <TextBlock Text="Введите ID клиента которого нужно удалить : "/>
-                                <TextBox Width="150" 
-                                     HorizontalAlignment="Left"
-                                     Margin="0 5"/>
-                            </StackPanel>
 
-                        </GroupBox>
+
+
 
                     </Grid>
 
 
-                        <GroupBox Grid.Column="0"
+                    <GroupBox Grid.Column="0"
                               Header="Добавить клиента"
                               Margin="4">
                         <StackPanel>
@@ -124,7 +212,7 @@
                                      HorizontalAlignment="Left"
                                      Margin="0 5"
                                      Text="{Binding Fname, UpdateSourceTrigger=PropertyChanged}"/>
-                            
+
                             <TextBlock Text="Фамилия: "/>
                             <TextBox Width="150"
                                      HorizontalAlignment="Left"
@@ -162,14 +250,14 @@
 
                     </GroupBox>
 
-                   
+
 
                 </Grid>
 
-                
-                
+
+
             </TabItem>
-            
+
         </TabControl>
     </DockPanel>
 </Window>
