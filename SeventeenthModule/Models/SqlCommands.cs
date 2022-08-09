@@ -10,8 +10,16 @@ using System.Windows;
 
 namespace SeventeenthModule.Models
 {
-    internal  class SqlCommands : DataWorker
+    internal class SqlCommands : DataWorker
     {
+
+        public delegate void ShowTextMessage(string Message);
+        private ShowTextMessage Show;
+
+        public SqlCommands(ShowTextMessage show)
+        {
+            Show = show;
+        }
 
         /// <summary>
         /// Запрос на добавление клиента
@@ -27,6 +35,7 @@ namespace SeventeenthModule.Models
 
             string InsertCommand = "INSERT INTO [Clients] (Fname,Lname,Pname,Phone,Emai) VALUES (@fname, @lname, @pname, @phone, @emai)";
             string SelectCommand = "SELECT * FROM Clients";
+            
 
             try
             {
@@ -48,7 +57,8 @@ namespace SeventeenthModule.Models
                     ClientsTable.Clear();
       
                     sqlDataAdapter.Fill(ClientsTable);
-            
+
+                    Show?.Invoke("Клиент успешно добавлен");
                 }
             }
             catch (Exception e)
@@ -132,7 +142,7 @@ namespace SeventeenthModule.Models
                     ClientsTable.Clear();
                     sqlDataAdapter.Fill(ClientsTable);
 
-                    MessageBox.Show("Данные успешно изменены");
+                    Show?.Invoke("Клиент успешно добавлен");
                 }
 
             }
@@ -165,6 +175,8 @@ namespace SeventeenthModule.Models
                     ClientsTable.Clear();
 
                     sqlDataAdapter.Fill(ClientsTable);
+
+                    Show?.Invoke("Клиент был удален");
 
                 }
             }

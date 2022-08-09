@@ -144,9 +144,7 @@ namespace SeventeenthModule.ViewModel
         {
             get { return _deleteid; }
             set
-            {
-                if (Equals(_deleteid, value)) return;
-
+            {             
                 _deleteid = value;
 
                 OnPropertyChanged();
@@ -215,6 +213,7 @@ namespace SeventeenthModule.ViewModel
         public void OnDeleteCleientExecute (object p)
         {
             SqlCommand.DeleteClient(DeleteId, DataBase.Tables["Clients"]);
+            DeleteId = 0;
         }
         #endregion
 
@@ -225,7 +224,7 @@ namespace SeventeenthModule.ViewModel
         public MainWindowViewModel()
         {
             DataWorker dataWorker = new DataWorker();
-            SqlCommand = new SqlCommands();
+            SqlCommand = new SqlCommands(ShowMessage);
             SqlClient = new Client();
 
             DataBase = dataWorker.DataSet;
@@ -236,6 +235,15 @@ namespace SeventeenthModule.ViewModel
             EditClientDataCommand = new LamdaCommand(OnEditClientDataExecute, CanEditClientDataExecute);
             DeleteClientCommand = new LamdaCommand(OnDeleteCleientExecute, CanDeleteClientExecuted);
         }
+        #endregion
+
+        #region Вспомогательные методы
+
+        public void ShowMessage(string message)
+        {
+            MessageBox.Show(message);
+        }
+
         #endregion
 
     }

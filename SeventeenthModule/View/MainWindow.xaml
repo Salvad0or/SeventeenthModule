@@ -155,6 +155,7 @@
                                     <TextBox Width="150"
                                      HorizontalAlignment="Left"
                                      Margin="0 2"
+                                     MaxLength="11"                     
                                      Text="{Binding SqlClient.Phone, UpdateSourceTrigger=PropertyChanged}"/>
 
 
