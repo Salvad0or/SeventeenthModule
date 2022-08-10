@@ -230,7 +230,8 @@
                             <TextBox Width="150"
                                      HorizontalAlignment="Left"
                                      Margin="0 5"
-                                     Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
+                                     Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"
+                                     MaxLength="11"/>
 
 
                             <TextBlock Text="E-mail: "/>
@@ -256,6 +257,74 @@
                 </Grid>
 
 
+
+            </TabItem>
+
+            <TabItem Header="Работа с заказами"> 
+
+                <TabControl>
+                    
+                    <TabItem Header="Все заказы">
+                        
+                        <DataGrid ItemsSource="{Binding Join.JoinTables.Tables[0]}"
+                                  AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Id Клиента" Binding="{Binding Id}"/>
+                                <DataGridTextColumn Header="Имя" Binding="{Binding Lname}"/>
+                                <DataGridTextColumn Header="Фамилия" Binding="{Binding Lname}"
+                                                    Width="95"/>
+                                <DataGridTextColumn Header="Отчество" Binding="{Binding Pname}"/>
+                                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
+                                <DataGridTextColumn Header="E-Mail" Binding="{Binding Email}"/>
+
+                                <DataGridTextColumn Header="Id заказа" Binding="{Binding OrderId}"
+                                                    Width="70"/>
+                                <DataGridTextColumn Header="Дата заказа" Binding="{Binding Date}"/>
+                                <DataGridTextColumn Header="Id продукта" Binding="{Binding ProductId}"/>
+                                
+                            </DataGrid.Columns>
+                   </DataGrid>
+                    </TabItem>
+
+                    <TabItem Header="Выборки по клиентам">
+
+                       
+                        
+                        <DockPanel>
+                            
+                            <GroupBox DockPanel.Dock="Top"
+                                      Header="Запросы" Width="344">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Введите ID клиента: "/>
+                                    <TextBox Width="85"
+                                             Margin="7 0"
+                                             MaxLength="11"
+                                             Text="{Binding JoinId}"/>
+                                    
+                                    <Button Content="OK"
+                                            Width="75" 
+                                            Height="20"
+                                            Margin="7 0"
+                                            Command="{Binding JoinClientByIdCommand}"/>
+
+                                </StackPanel>
+                            </GroupBox>
+
+                            <DataGrid DockPanel.Dock="Top"
+                                      Margin="0 10"
+                                      ItemsSource="{Binding Table}">
+                                
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn></DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
+                        
+                    </TabItem>
+                    
+                </TabControl>
+
+                
 
             </TabItem>
 

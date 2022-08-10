@@ -28,7 +28,8 @@ namespace SeventeenthModule.ViewModel
         private string _pName;
         private int _id;
         private Client _sqlclient;
-        private int _deleteid;  
+        private int _deleteid;
+        private JoinCommands _join;
 
         #endregion
 
@@ -153,6 +154,31 @@ namespace SeventeenthModule.ViewModel
 
         #endregion
 
+        #region Свойсвта окна JOIN
+
+        
+        /// <summary>
+        /// Основной экземляр класса Join
+        /// </summary>
+        public JoinCommands Join
+        {
+            get { return _join; }
+            set 
+            {
+                _join = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        /// <summary>
+        /// Свойство для поиска клиента по ID или телефону
+        /// </summary>
+        public int JoinId { get; set; }
+
+
+        #endregion
+
         #endregion
 
 
@@ -217,6 +243,32 @@ namespace SeventeenthModule.ViewModel
         }
         #endregion
 
+        #region Команда соединения клиента по покупкам
+
+        private DataTable _t;
+        public DataTable Table 
+        { 
+            get => _t;
+            
+            set
+            {
+                _t = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand JoinClientByIdCommand { get; }
+
+        public bool CanJoinClientByIdExecuted(object p) => true;
+
+        public void OnJoinClientByIdExecuted(object p)
+        {
+            Table = Join.JoinTableByName(JoinId);
+
+        }
+
+        #endregion
+
         #endregion
 
 
@@ -224,8 +276,13 @@ namespace SeventeenthModule.ViewModel
         public MainWindowViewModel()
         {
             DataWorker dataWorker = new DataWorker();
-            SqlCommand = new SqlCommands(ShowMessage);
+            SqlCommand = new SqlCommands(ShowMessages);
             SqlClient = new Client();
+            Join = new JoinCommands(ShowMessages);
+
+            //Test Table
+
+            Table = new DataTable();
 
             DataBase = dataWorker.DataSet;
             
@@ -234,12 +291,13 @@ namespace SeventeenthModule.ViewModel
             SearchClientByIdForEditingCommand = new LamdaCommand(OnSearchClientByIdForEditingExecute, CanSearchClientByIdForEditingExecuted);
             EditClientDataCommand = new LamdaCommand(OnEditClientDataExecute, CanEditClientDataExecute);
             DeleteClientCommand = new LamdaCommand(OnDeleteCleientExecute, CanDeleteClientExecuted);
+            JoinClientByIdCommand = new LamdaCommand(OnJoinClientByIdExecuted, CanJoinClientByIdExecuted);
         }
         #endregion
 
         #region Вспомогательные методы
 
-        public void ShowMessage(string message)
+        public void ShowMessages(string message)
         {
             MessageBox.Show(message);
         }

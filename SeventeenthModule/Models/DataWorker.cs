@@ -16,6 +16,9 @@ namespace SeventeenthModule.Models
 
         private DataSet _dataSet;
 
+        public delegate void ShowTextMessage(string Message);
+        protected ShowTextMessage Show;
+
         public DataSet DataSet
         {
             get { return _dataSet; }

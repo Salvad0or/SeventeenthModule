@@ -13,13 +13,13 @@ namespace SeventeenthModule.Models
     internal class SqlCommands : DataWorker
     {
 
-        public delegate void ShowTextMessage(string Message);
-        private ShowTextMessage Show;
-
+        #region Конструкторы
         public SqlCommands(ShowTextMessage show)
         {
             Show = show;
         }
+
+        #endregion
 
         /// <summary>
         /// Запрос на добавление клиента
@@ -153,6 +153,11 @@ namespace SeventeenthModule.Models
             }
         }
 
+        /// <summary>
+        /// Метод удаления клиента из базы
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="ClientsTable"></param>
         public void DeleteClient(int id, DataTable ClientsTable)
         {
             try
