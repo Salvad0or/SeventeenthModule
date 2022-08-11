@@ -11,9 +11,7 @@ namespace SeventeenthModule.Models
     internal class DataWorker
     {
         protected SqlConnectionStringBuilder ConnectionString { get; init; }
-
-        SqlDataAdapter _dataAdapter;
-
+     
         private DataSet _dataSet;
 
         public delegate void ShowTextMessage(string Message);
@@ -22,11 +20,10 @@ namespace SeventeenthModule.Models
         public DataSet DataSet
         {
             get { return _dataSet; }
-            private set { _dataSet = value; }
+            protected set { _dataSet = value; }
         }
 
-
-        public DataWorker()
+        public DataWorker(ShowTextMessage show)
         {
             ConnectionString = new SqlConnectionStringBuilder
             {
@@ -35,31 +32,11 @@ namespace SeventeenthModule.Models
                 Pooling = true
             };
 
-            string[] commands =
-                {
-                "SELECT * FROM Clients",
-                "SELECT * FROM Orders",
-                "SELECT * FROM Products"
-                };           
-
-            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString.ToString()))
-            {
-
-                sqlConnection.Open();
-
-                DataSet = new DataSet();
-
-                DataSet.Tables.Add("Clients");
-                DataSet.Tables.Add("Orders");
-                DataSet.Tables.Add("Products");
-
-                for (int i = 0; i < 3; i++)
-                {
-                    SqlDataAdapter DataAdapter = new SqlDataAdapter(commands[i], sqlConnection);
-                    DataAdapter.Fill(DataSet.Tables[i]);                  
-                }       
-            }
+            Show = show;
         }
+
+        public DataWorker() { }
+
         
     }
 }

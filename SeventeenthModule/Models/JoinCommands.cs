@@ -10,11 +10,18 @@ namespace SeventeenthModule.Models
 {
     internal class JoinCommands : DataWorker
     {
-
-        public static DataSet JoinTables { get; private set; }
+        /// <summary>
+        /// Таблица хранит все сущности JOIN'ов
+        /// </summary>
+        public DataSet JoinTables { get; private set; }
 
         #region Конструкторы
-        public JoinCommands(ShowTextMessage show)
+
+        /// <summary>
+        /// Главный конструктор. Здесь делаем первый JOIN и создаем все дальнейшие таблицы для работы.
+        /// </summary>
+        /// <param name="show"></param>
+        public JoinCommands()
         {
             try
             {
@@ -33,10 +40,11 @@ namespace SeventeenthModule.Models
                     JoinTables.Tables.Add("JoinById");
 
                     SqlDataAdapter dataAdapter = new SqlDataAdapter(command, connection);
+                    
 
                     dataAdapter.Fill(JoinTables.Tables["JoinAllOrders"]);
-
-                    Show = show;
+                    
+                    
 
                 }
             }
@@ -49,14 +57,18 @@ namespace SeventeenthModule.Models
 
         #endregion
 
-        public DataTable JoinTableByName(int JoinId)
+        /// <summary>
+        /// Находим клиента по ID и вывыводим в таблицы
+        /// </summary>
+        /// <param name="JoinId"></param>
+        public void JoinTableById(int JoinId)
         {
             DataTable returnTable = new DataTable();
 
             try
             {
                 string command =
-                    "SELECT * FROM [Clients] c " +
+                    "SELECT Fname, Lname, Pname, Phone, Emai, o.Id OrderId,[Date],ProductId,Clientid FROM [Clients] c " +
                     "JOIN [Orders] o " +
                     "ON c.Id = o.Clientid " +
                     $"WHERE c.Id = {JoinId}";
@@ -67,19 +79,16 @@ namespace SeventeenthModule.Models
 
                     SqlDataAdapter dataAdapter = new SqlDataAdapter(command, connection);
 
+                    JoinTables.Tables["JoinById"].Clear();
+
                     dataAdapter.Fill(JoinTables.Tables["JoinById"]);
-
-                    returnTable = JoinTables.Tables["JoinById"];
-
-                    return returnTable;
                 }
             }
             catch (Exception e)
             {
 
                 Show?.Invoke(e.Message);
-
-                return null;
+               
             }
 
             

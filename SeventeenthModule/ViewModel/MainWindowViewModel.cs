@@ -46,7 +46,7 @@ namespace SeventeenthModule.ViewModel
             }
         } 
 
-        public SqlCommands SqlCommand { get; set; }
+        public SecondWindowWorker SqlCommand { get; set; }
 
 
         #endregion
@@ -263,8 +263,7 @@ namespace SeventeenthModule.ViewModel
 
         public void OnJoinClientByIdExecuted(object p)
         {
-            Table = Join.JoinTableByName(JoinId);
-
+            Join.JoinTableById(JoinId);
         }
 
         #endregion
@@ -275,16 +274,17 @@ namespace SeventeenthModule.ViewModel
         #region Конструктор
         public MainWindowViewModel()
         {
-            DataWorker dataWorker = new DataWorker();
-            SqlCommand = new SqlCommands(ShowMessages);
+            SelectCommands selectCommands = new SelectCommands();
+            DataWorker dataWorker = new DataWorker(ShowMessages);
+            SqlCommand = new SecondWindowWorker();
             SqlClient = new Client();
-            Join = new JoinCommands(ShowMessages);
+            Join = new JoinCommands();
 
             //Test Table
 
             Table = new DataTable();
 
-            DataBase = dataWorker.DataSet;
+            DataBase = selectCommands.DataSet;
             
 
             AddsClientCommand = new LamdaCommand(OnAddsClientExecuted, CanAddsClientExecute);

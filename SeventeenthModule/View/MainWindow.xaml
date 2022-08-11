@@ -270,7 +270,7 @@
                                   AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id Клиента" Binding="{Binding Id}"/>
-                                <DataGridTextColumn Header="Имя" Binding="{Binding Lname}"/>
+                                <DataGridTextColumn Header="Имя" Binding="{Binding Fname}"/>
                                 <DataGridTextColumn Header="Фамилия" Binding="{Binding Lname}"
                                                     Width="95"/>
                                 <DataGridTextColumn Header="Отчество" Binding="{Binding Pname}"/>
@@ -286,6 +286,14 @@
                    </DataGrid>
                     </TabItem>
 
+                    <TabItem Header="Добавить новый заказ">
+                        
+                        
+
+                    </TabItem>
+
+
+
                     <TabItem Header="Выборки по клиентам">
 
                        
@@ -293,7 +301,7 @@
                         <DockPanel>
                             
                             <GroupBox DockPanel.Dock="Top"
-                                      Header="Запросы" Width="344">
+                                      Header="Получить все заказы определенного клиента" Width="344">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Введите ID клиента: "/>
                                     <TextBox Width="85"
@@ -312,21 +320,34 @@
 
                             <DataGrid DockPanel.Dock="Top"
                                       Margin="0 10"
-                                      ItemsSource="{Binding Table}">
-                                
+                                      ItemsSource="{Binding Join.JoinTables.Tables[1]}">
+
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Имя" Binding="{Binding Fname}"/>
+                                    <DataGridTextColumn Header="Фамилия" Binding="{Binding Lname}"
+                                                    Width="95"/>
+                                    <DataGridTextColumn Header="Отчество" Binding="{Binding Pname}"/>
+                                    <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}"/>
+                                    <DataGridTextColumn Header="E-Mail" Binding="{Binding Email}"/>
+
+                                    <DataGridTextColumn Header="Id заказа" Binding="{Binding OrderId}"
+                                                    Width="70"/>
+                                    <DataGridTextColumn Header="Id продукта" Binding="{Binding ProductId}"/>
+                                    <DataGridTextColumn Header="Дата заказа" Binding="{Binding Date}"
+                                                        Width="*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </DockPanel>
                         
                     </TabItem>
-                    
+   
                 </TabControl>
 
                 
 
             </TabItem>
+
+            
 
         </TabControl>
     </DockPanel>

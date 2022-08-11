@@ -10,17 +10,8 @@ using System.Windows;
 
 namespace SeventeenthModule.Models
 {
-    internal class SqlCommands : DataWorker
+    internal class SecondWindowWorker : DataWorker
     {
-
-        #region Конструкторы
-        public SqlCommands(ShowTextMessage show)
-        {
-            Show = show;
-        }
-
-        #endregion
-
         /// <summary>
         /// Запрос на добавление клиента
         /// </summary>
