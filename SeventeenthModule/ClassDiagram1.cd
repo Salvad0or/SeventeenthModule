@@ -10,7 +10,7 @@
   <Class Name="SeventeenthModule.Models.JoinCommands" Collapsed="true">
     <Position X="4" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
       <FileName>Models\JoinCommands.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -25,7 +25,7 @@
     <Position X="2.25" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAABAgAAACA=</HashCode>
-      <FileName>Models\SqlCommands.cs</FileName>
+      <FileName>Models\SecondWindowWorker.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SeventeenthModule.Services.Client" Collapsed="true">
@@ -38,7 +38,7 @@
   <Class Name="SeventeenthModule.ViewModel.MainWindowViewModel" Collapsed="true">
     <Position X="6.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAULEAglAABBAQiAJABQQQKAAgAAAEJADAAA6AAAkBE=</HashCode>
+      <HashCode>AAVLEIglCABBAQiAJABSQYKAAgAAAEJADAAA6ACA0RE=</HashCode>
       <FileName>ViewModel\MainWindowViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>

@@ -180,14 +180,14 @@
 
                         <GroupBox Header="Удалить клиента" Margin="0,260,0,4" Grid.RowSpan="2">
                             <StackPanel Orientation="Horizontal">
-                                
+
                                 <TextBlock Text="Введите Id: " Height="20"/>
-                                
+
                                 <TextBox Height="20"
                                          Width="100"
                                          Margin="5 0"
                                          Text="{Binding DeleteId, UpdateSourceTrigger=PropertyChanged}"/>
-                                
+
                                 <Button Content="Удалить"
                                         Height="20"
                                         Width="75"
@@ -260,12 +260,12 @@
 
             </TabItem>
 
-            <TabItem Header="Работа с заказами"> 
+            <TabItem Header="Работа с заказами">
 
                 <TabControl>
-                    
+
                     <TabItem Header="Все заказы">
-                        
+
                         <DataGrid ItemsSource="{Binding Join.JoinTables.Tables[0]}"
                                   AutoGenerateColumns="False">
                             <DataGrid.Columns>
@@ -281,14 +281,84 @@
                                                     Width="70"/>
                                 <DataGridTextColumn Header="Дата заказа" Binding="{Binding Date}"/>
                                 <DataGridTextColumn Header="Id продукта" Binding="{Binding ProductId}"/>
-                                
+
                             </DataGrid.Columns>
-                   </DataGrid>
+                        </DataGrid>
                     </TabItem>
 
                     <TabItem Header="Добавить новый заказ">
-                        
-                        
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="103*"></RowDefinition>
+                                <RowDefinition Height="15*"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <GroupBox Header="Добавить новый заказ"
+                                      FontSize="20">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="190*"></ColumnDefinition>
+                                            <ColumnDefinition Width="190*"></ColumnDefinition>
+                                            <ColumnDefinition Width="389*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="Id Клиента : "/>
+                                            <TextBox Margin="0 5"
+                                                     Width="150"
+                                                     HorizontalAlignment="Left"
+                                                     Text="{Binding ClientIdForAddOrder}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="Id Продукта:"/>
+                                            <TextBox Margin=" 0 5"
+                                                     Width="150"
+                                                     HorizontalAlignment="Left"
+                                                     Text="{Binding Mass[0]}"/>
+                                            
+                                            <TextBox Margin=" 0 5"
+                                                     Width="150"
+                                                     HorizontalAlignment="Left"
+                                                     Text="{Binding Mass[1]}"/>
+                                            
+                                            <TextBox Margin=" 0 5"
+                                                     Width="150"
+                                                     HorizontalAlignment="Left"
+                                                     Text="{Binding Mass[2]}"/>
+                                            
+                                            <TextBox Margin=" 0 5"
+                                                     Width="150"
+                                                     HorizontalAlignment="Left"
+                                                     Text="{Binding Mass[3]}"/>
+                                            
+                                            <TextBox Margin=" 0 5"
+                                                     Width="150"
+                                                     HorizontalAlignment="Left"
+                                                     Text="{Binding Mass[4]}"/>
+                                           
+                                        </StackPanel>
+
+                                        <Button  Grid.Column="2"
+                                                 Width="165"
+                                                 Height="35"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 Margin="0 29"
+                                                 Content="Добавить заказ"
+                                                 Command="{Binding AddOrderCommand}"/>
+
+                                    </Grid>
+
+
+
+                                </StackPanel>
+
+                            </GroupBox>
+
+                        </Grid>
+
 
                     </TabItem>
 
@@ -296,10 +366,10 @@
 
                     <TabItem Header="Выборки по клиентам">
 
-                       
-                        
+
+
                         <DockPanel>
-                            
+
                             <GroupBox DockPanel.Dock="Top"
                                       Header="Получить все заказы определенного клиента" Width="344">
                                 <StackPanel Orientation="Horizontal">
@@ -308,7 +378,7 @@
                                              Margin="7 0"
                                              MaxLength="11"
                                              Text="{Binding JoinId}"/>
-                                    
+
                                     <Button Content="OK"
                                             Width="75" 
                                             Height="20"
@@ -338,16 +408,16 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                         </DockPanel>
-                        
+
                     </TabItem>
-   
+
                 </TabControl>
 
-                
+
 
             </TabItem>
 
-            
+
 
         </TabControl>
     </DockPanel>

@@ -10,52 +10,32 @@ namespace SeventeenthModule.Models
 {
     internal class JoinCommands : DataWorker
     {
+        #region Свойства
+
         /// <summary>
         /// Таблица хранит все сущности JOIN'ов
         /// </summary>
         public DataSet JoinTables { get; private set; }
 
+        #endregion
+
         #region Конструкторы
 
-        /// <summary>
-        /// Главный конструктор. Здесь делаем первый JOIN и создаем все дальнейшие таблицы для работы.
-        /// </summary>
-        /// <param name="show"></param>
         public JoinCommands()
         {
-            try
-            {
-                string command =
-                    "SELECT c.Id Id, Fname, Lname, Pname , Phone, Emai Email, o.Id OrderId, [Date], ProductId, Clientid FROM CLIENTS c " +
-                    "JOIN [Orders] o " +
-                    "ON c.Id = o.Clientid";
 
-                using (SqlConnection connection = new SqlConnection(ConnectionString.ToString()))
-                {
-                    connection.Open();
+            JoinTables = new DataSet();
 
-                    JoinTables = new DataSet();
+            JoinTables.Tables.Add("JoinAllOrders");
+            JoinTables.Tables.Add("JoinById");
 
-                    JoinTables.Tables.Add("JoinAllOrders");
-                    JoinTables.Tables.Add("JoinById");
+            InitializeJoinTableByAllOrders();
 
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter(command, connection);
-                    
-
-                    dataAdapter.Fill(JoinTables.Tables["JoinAllOrders"]);
-                    
-                    
-
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
         }
 
         #endregion
+
+        #region Методы
 
         /// <summary>
         /// Находим клиента по ID и вывыводим в таблицы
@@ -93,5 +73,40 @@ namespace SeventeenthModule.Models
 
             
         }
+
+        /// <summary>
+        /// Заполнение таблицы для всех заказов
+        /// </summary>
+        public void InitializeJoinTableByAllOrders ()
+        {
+            string command =
+                    "SELECT c.Id Id, Fname, Lname, Pname , Phone, Emai Email, o.Id OrderId, [Date], ProductId, Clientid FROM CLIENTS c " +
+                    "JOIN [Orders] o " +
+                    "ON c.Id = o.Clientid";
+
+            try
+            {
+
+                using (SqlConnection connection = new SqlConnection(ConnectionString.ToString()))
+                {
+                    connection.Open();
+
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(command, connection);
+
+                    JoinTables.Tables["JoinAllOrders"].Clear();
+
+                    dataAdapter.Fill(JoinTables.Tables["JoinAllOrders"]);
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        #endregion
     }
 }

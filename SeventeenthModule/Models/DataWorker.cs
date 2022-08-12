@@ -10,12 +10,13 @@ namespace SeventeenthModule.Models
 {
     internal class DataWorker
     {
-        protected SqlConnectionStringBuilder ConnectionString { get; init; }
-     
-        private DataSet _dataSet;
+        protected static readonly SqlConnectionStringBuilder ConnectionString;
+        
 
+        private DataSet _dataSet;
         public delegate void ShowTextMessage(string Message);
-        protected ShowTextMessage Show;
+        protected static ShowTextMessage Show;
+
 
         public DataSet DataSet
         {
@@ -24,6 +25,12 @@ namespace SeventeenthModule.Models
         }
 
         public DataWorker(ShowTextMessage show)
+        {             
+
+            Show = show;
+        }
+
+        static DataWorker()
         {
             ConnectionString = new SqlConnectionStringBuilder
             {
@@ -31,8 +38,6 @@ namespace SeventeenthModule.Models
                 InitialCatalog = "ITVDN2db",
                 Pooling = true
             };
-
-            Show = show;
         }
 
         public DataWorker() { }

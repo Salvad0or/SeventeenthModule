@@ -26,14 +26,21 @@ namespace SeventeenthModule.ViewModel
         private string _phone;
         private string _emai;
         private string _pName;
+        private int[] _mass;
         private int _id;
+        private int _clientidforaddorder;
         private Client _sqlclient;
         private int _deleteid;
         private JoinCommands _join;
-
+        private InsertCommands _insertCommand;
         #endregion
 
         #region Основные свойства
+
+
+        DataWorker dataWorker { get; set; }
+        SelectCommands selectCommands { get; set; }
+
         public DataSet DataBase
         {
             get { return _tables; }
@@ -47,6 +54,14 @@ namespace SeventeenthModule.ViewModel
         } 
 
         public SecondWindowWorker SqlCommand { get; set; }
+
+       
+        public InsertCommands InsertCommand
+        {
+            get { return _insertCommand; }
+            set { _insertCommand = value; }
+        }
+
 
 
         #endregion
@@ -154,9 +169,39 @@ namespace SeventeenthModule.ViewModel
 
         #endregion
 
-        #region Свойсвта окна JOIN
+        #region Свойства добавления нового заказа
 
         
+
+        public int ClientIdForAddOrder
+        {
+            get { return _clientidforaddorder; }
+            set 
+            {
+                _clientidforaddorder = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+
+        public int [] Mass
+        {
+            get => _mass;
+            set
+
+            {
+                _mass = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        #endregion
+
+        #region Свойсвта окна JOIN
+
+
         /// <summary>
         /// Основной экземляр класса Join
         /// </summary>
@@ -268,30 +313,50 @@ namespace SeventeenthModule.ViewModel
 
         #endregion
 
+        #region Команда добавления нового заказа
+
+        public  ICommand AddOrderCommand { get; }
+
+        public bool CanAddOrderExecuted(object p) => true;
+
+        public void OnAddOrderExecute(object p)
+        {
+            InsertCommand.InsertDataInOrders(Mass,ClientIdForAddOrder, Join);
+        }
+
+        #endregion
+
         #endregion
 
 
         #region Конструктор
         public MainWindowViewModel()
         {
-            SelectCommands selectCommands = new SelectCommands();
-            DataWorker dataWorker = new DataWorker(ShowMessages);
+            #region инициализация всех объектов
+
+            dataWorker = new DataWorker(ShowMessages);
+            selectCommands = new SelectCommands();    
             SqlCommand = new SecondWindowWorker();
             SqlClient = new Client();
             Join = new JoinCommands();
-
-            //Test Table
-
+            Mass = new int[5];
+            InsertCommand = new InsertCommands();
             Table = new DataTable();
 
             DataBase = selectCommands.DataSet;
-            
+
+            #endregion
+
+            #region Объявление команд
 
             AddsClientCommand = new LamdaCommand(OnAddsClientExecuted, CanAddsClientExecute);
             SearchClientByIdForEditingCommand = new LamdaCommand(OnSearchClientByIdForEditingExecute, CanSearchClientByIdForEditingExecuted);
             EditClientDataCommand = new LamdaCommand(OnEditClientDataExecute, CanEditClientDataExecute);
             DeleteClientCommand = new LamdaCommand(OnDeleteCleientExecute, CanDeleteClientExecuted);
             JoinClientByIdCommand = new LamdaCommand(OnJoinClientByIdExecuted, CanJoinClientByIdExecuted);
+            AddOrderCommand = new LamdaCommand(OnAddOrderExecute, CanAddOrderExecuted);
+
+            #endregion
         }
         #endregion
 
