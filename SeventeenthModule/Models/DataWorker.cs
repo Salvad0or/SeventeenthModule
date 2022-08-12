@@ -8,22 +8,30 @@ using System.Threading.Tasks;
 
 namespace SeventeenthModule.Models
 {
+    /// <summary>
+    /// Базовый класс. Хранит свойства для работы
+    /// </summary>
     internal class DataWorker
     {
-        protected static readonly SqlConnectionStringBuilder ConnectionString;
-        
+        #region Поля и свойства
 
         private DataSet _dataSet;
-        public delegate void ShowTextMessage(string Message);
+
+        protected static readonly SqlConnectionStringBuilder ConnectionString;
+
         protected static ShowTextMessage Show;
 
-
+        public delegate void ShowTextMessage(string Message);
+          
         public DataSet DataSet
         {
             get { return _dataSet; }
             protected set { _dataSet = value; }
         }
 
+        #endregion
+
+        #region Конструкторы
         public DataWorker(ShowTextMessage show)
         {             
 
@@ -42,6 +50,7 @@ namespace SeventeenthModule.Models
 
         public DataWorker() { }
 
-        
+        #endregion
+
     }
 }

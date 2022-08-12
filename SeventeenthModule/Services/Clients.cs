@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SeventeenthModule.Services
 {
+    /// <summary>
+    /// Сущность клиента
+    /// </summary>
     internal class Client
     {
         public string Fname { get; set; }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SeventeenthModule.Infrastructure
 {
+    /// <summary>
+    /// Класс который будут использовать все команды
+    /// </summary>
     internal class LamdaCommand : BaseCommand
     {
         private readonly Action<object> _Execute;

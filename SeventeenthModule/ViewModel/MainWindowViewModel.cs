@@ -39,7 +39,11 @@ namespace SeventeenthModule.ViewModel
 
 
         DataWorker dataWorker { get; set; }
-        SelectCommands selectCommands { get; set; }
+        SelectCommands SqlSelect { get; set; }
+
+        UpdateCommands SqlUpdate { get; set; }
+
+        DeleteCommands SqlDelete { get; set; }
 
         public DataSet DataBase
         {
@@ -51,12 +55,20 @@ namespace SeventeenthModule.ViewModel
                 OnPropertyChanged();
 
             }
-        } 
+        }
 
-        public SecondWindowWorker SqlCommand { get; set; }
+        public JoinCommands SqlJoin
+        {
+            get { return _join; }
+            set
+            {
+                _join = value;
+                OnPropertyChanged();
+            }
+        }
 
-       
-        public InsertCommands InsertCommand
+
+        public InsertCommands SqlInsert
         {
             get { return _insertCommand; }
             set { _insertCommand = value; }
@@ -205,15 +217,7 @@ namespace SeventeenthModule.ViewModel
         /// <summary>
         /// Основной экземляр класса Join
         /// </summary>
-        public JoinCommands Join
-        {
-            get { return _join; }
-            set 
-            {
-                _join = value;
-                OnPropertyChanged();
-            }
-        }
+        
 
 
         /// <summary>
@@ -240,7 +244,7 @@ namespace SeventeenthModule.ViewModel
 
         private void OnAddsClientExecuted(object p)
         {
-            SqlCommand.Istert(Fname, Lname, Pname, Phone, Emai, DataBase.Tables["Clients"]);
+            SqlInsert.IstertNewClient(Fname, Lname, Pname, Phone, Emai, DataBase.Tables["Clients"]);
         }
 
         #endregion
@@ -255,7 +259,7 @@ namespace SeventeenthModule.ViewModel
         public bool CanSearchClientByIdForEditingExecuted(object p) => true;
         public void OnSearchClientByIdForEditingExecute(object p)
         {
-            SqlClient = SqlCommand.SearchClientsById(SqlClient, Id);
+            SqlClient = SqlSelect.SearchClientsById(SqlClient, Id);
         }
 
 
@@ -270,7 +274,7 @@ namespace SeventeenthModule.ViewModel
 
         public void OnEditClientDataExecute(object p)
         {
-            SqlCommand.EditClientData(SqlClient, Id, DataBase.Tables["Clients"]);
+            SqlUpdate.EditClientData(SqlClient, Id, DataBase.Tables["Clients"]);
         }
 
         #endregion
@@ -283,7 +287,7 @@ namespace SeventeenthModule.ViewModel
 
         public void OnDeleteCleientExecute (object p)
         {
-            SqlCommand.DeleteClient(DeleteId, DataBase.Tables["Clients"]);
+            SqlDelete.DeleteClient(DeleteId, DataBase.Tables["Clients"]);
             DeleteId = 0;
         }
         #endregion
@@ -308,7 +312,7 @@ namespace SeventeenthModule.ViewModel
 
         public void OnJoinClientByIdExecuted(object p)
         {
-            Join.JoinTableById(JoinId);
+            SqlJoin.JoinTableById(JoinId);
         }
 
         #endregion
@@ -321,7 +325,7 @@ namespace SeventeenthModule.ViewModel
 
         public void OnAddOrderExecute(object p)
         {
-            InsertCommand.InsertDataInOrders(Mass,ClientIdForAddOrder, Join);
+            SqlInsert.InsertDataInOrders(Mass,ClientIdForAddOrder, SqlJoin);
         }
 
         #endregion
@@ -335,16 +339,18 @@ namespace SeventeenthModule.ViewModel
             #region инициализация всех объектов
 
             dataWorker = new DataWorker(ShowMessages);
-            selectCommands = new SelectCommands();    
-            SqlCommand = new SecondWindowWorker();
+
+            SqlSelect = new SelectCommands();    
             SqlClient = new Client();
-            Join = new JoinCommands();
-            Mass = new int[5];
-            InsertCommand = new InsertCommands();
-            Table = new DataTable();
+            SqlInsert = new InsertCommands();
+            SqlUpdate = new UpdateCommands();
+            SqlDelete = new DeleteCommands();
+            SqlJoin = new JoinCommands();
 
-            DataBase = selectCommands.DataSet;
-
+            Mass = new int[5];           
+            Table = new DataTable();        
+            DataBase = SqlSelect.DataSet;
+          
             #endregion
 
             #region Объявление команд

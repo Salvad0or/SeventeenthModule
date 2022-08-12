@@ -7,6 +7,9 @@ using System.Windows.Input;
 
 namespace SeventeenthModule.Infrastructure
 {
+    /// <summary>
+    /// Базовый класс для реализации команд во Вью
+    /// </summary>
     internal abstract class BaseCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged

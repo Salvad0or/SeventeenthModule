@@ -266,7 +266,7 @@
 
                     <TabItem Header="Все заказы">
 
-                        <DataGrid ItemsSource="{Binding Join.JoinTables.Tables[0]}"
+                        <DataGrid ItemsSource="{Binding SqlJoin.JoinTables.Tables[0]}"
                                   AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id Клиента" Binding="{Binding Id}"/>
@@ -317,27 +317,27 @@
                                                      Width="150"
                                                      HorizontalAlignment="Left"
                                                      Text="{Binding Mass[0]}"/>
-                                            
+
                                             <TextBox Margin=" 0 5"
                                                      Width="150"
                                                      HorizontalAlignment="Left"
                                                      Text="{Binding Mass[1]}"/>
-                                            
+
                                             <TextBox Margin=" 0 5"
                                                      Width="150"
                                                      HorizontalAlignment="Left"
                                                      Text="{Binding Mass[2]}"/>
-                                            
+
                                             <TextBox Margin=" 0 5"
                                                      Width="150"
                                                      HorizontalAlignment="Left"
                                                      Text="{Binding Mass[3]}"/>
-                                            
+
                                             <TextBox Margin=" 0 5"
                                                      Width="150"
                                                      HorizontalAlignment="Left"
                                                      Text="{Binding Mass[4]}"/>
-                                           
+
                                         </StackPanel>
 
                                         <Button  Grid.Column="2"
@@ -366,8 +366,6 @@
 
                     <TabItem Header="Выборки по клиентам">
 
-
-
                         <DockPanel>
 
                             <GroupBox DockPanel.Dock="Top"
@@ -390,7 +388,7 @@
 
                             <DataGrid DockPanel.Dock="Top"
                                       Margin="0 10"
-                                      ItemsSource="{Binding Join.JoinTables.Tables[1]}">
+                                      ItemsSource="{Binding SqlJoin.JoinTables.Tables[1]}">
 
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Имя" Binding="{Binding Fname}"/>
@@ -414,10 +412,34 @@
                 </TabControl>
 
 
-
             </TabItem>
 
+            <TabItem Header="Для профессионалов">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="107*"/>
+                        <RowDefinition Height="275*"/>
+                    </Grid.RowDefinitions>
 
+                    <GroupBox Header="Удаление таблицы"
+                              Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Введите название таблицы :"
+                                       VerticalAlignment="Center"/>
+
+                            <TextBox Width="150"
+                                     Height="25"
+                                     Margin="10"/>
+
+                            <Button Content="Delete" 
+                                    Width="125"
+                                    Height="25"
+                                    Margin="10"/>
+                        </StackPanel>
+
+                    </GroupBox>
+                </Grid>
+            </TabItem>
 
         </TabControl>
     </DockPanel>

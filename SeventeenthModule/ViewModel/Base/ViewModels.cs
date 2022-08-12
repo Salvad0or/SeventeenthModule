@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace SeventeenthModule.ViewModel.Base
 {
+    /// <summary>
+    /// Стандарт реализации MVVM
+    /// </summary>
     internal abstract class ViewModels : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
