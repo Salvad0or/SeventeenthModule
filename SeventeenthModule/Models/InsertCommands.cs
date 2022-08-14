@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using SeventeenthModule.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -66,7 +67,7 @@ namespace SeventeenthModule.Models
         /// <param name="phone"></param>
         /// <param name="emai"></param>
         /// <param name="ClientsTable"></param>
-        public void IstertNewClient(string fname, string lname, string pname, string phone, string emai, DataTable ClientsTable)
+        public void IstertNewClient(Client NewClient, DataTable ClientsTable)
         {
 
             string InsertCommand = "INSERT INTO [Clients] (Fname,Lname,Pname,Phone,Emai) VALUES (@fname, @lname, @pname, @phone, @emai)";
@@ -82,11 +83,11 @@ namespace SeventeenthModule.Models
                     SqlCommand command = new SqlCommand(InsertCommand, sqlConnection);
                     SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(SelectCommand, sqlConnection);
 
-                    command.Parameters.AddWithValue("@fname", fname);
-                    command.Parameters.AddWithValue("@lname", lname);
-                    command.Parameters.AddWithValue("@pname", pname);
-                    command.Parameters.AddWithValue("@phone", phone);
-                    command.Parameters.AddWithValue("@emai", emai);
+                    command.Parameters.AddWithValue("@fname", NewClient.Fname);
+                    command.Parameters.AddWithValue("@lname", NewClient.Lname);
+                    command.Parameters.AddWithValue("@pname", NewClient.Pname);
+                    command.Parameters.AddWithValue("@phone", NewClient.Phone);
+                    command.Parameters.AddWithValue("@emai", NewClient.Emai);
 
                     command.ExecuteNonQuery();
 

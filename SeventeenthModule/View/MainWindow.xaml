@@ -43,7 +43,6 @@
                                 <DataGridTextColumn Header="Дата" Binding="{Binding Date}"/>
                                 <DataGridTextColumn Header="Id продукта" Binding="{Binding ProductId}"/>
                                 <DataGridTextColumn Header="Id клиента" Binding="{Binding Clientid}"/>
-                                <DataGridTextColumn Header="Комментарий" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </TabItem>
@@ -132,19 +131,19 @@
                                     <TextBox Width="150"
                                      HorizontalAlignment="Left"
                                      Margin="0 2"
-                                     Text="{Binding SqlClient.Fname, UpdateSourceTrigger=PropertyChanged}"/>
+                                     Text="{Binding ClientWichWillChange.Fname, UpdateSourceTrigger=PropertyChanged}"/>
 
                                     <TextBlock Text="Фамилия: "/>
                                     <TextBox Width="150"
                                      HorizontalAlignment="Left"
                                      Margin="0 2"
-                                     Text="{Binding SqlClient.Lname, UpdateSourceTrigger=PropertyChanged}"/>
+                                     Text="{Binding ClientWichWillChange.Lname, UpdateSourceTrigger=PropertyChanged}"/>
 
                                     <TextBlock Text="Отчество: "/>
                                     <TextBox Width="150"
                                      HorizontalAlignment="Left"
                                      Margin="0 2"
-                                     Text="{Binding SqlClient.Pname, UpdateSourceTrigger=PropertyChanged}"/>
+                                     Text="{Binding ClientWichWillChange.Pname, UpdateSourceTrigger=PropertyChanged}"/>
 
                                 </StackPanel>
 
@@ -156,14 +155,14 @@
                                      HorizontalAlignment="Left"
                                      Margin="0 2"
                                      MaxLength="11"                     
-                                     Text="{Binding SqlClient.Phone, UpdateSourceTrigger=PropertyChanged}"/>
+                                     Text="{Binding ClientWichWillChange.Phone, UpdateSourceTrigger=PropertyChanged}"/>
 
 
                                     <TextBlock Text="E-mail: "/>
                                     <TextBox Width="150"
                                      HorizontalAlignment="Left"
                                      Margin="0 2"
-                                     Text="{Binding SqlClient.Emai, UpdateSourceTrigger=PropertyChanged}"/>
+                                     Text="{Binding ClientWichWillChange.Emai, UpdateSourceTrigger=PropertyChanged}"/>
 
                                     <Button Content="Изменить"
                                     Width="150"
@@ -212,25 +211,25 @@
                             <TextBox Width="150"
                                      HorizontalAlignment="Left"
                                      Margin="0 5"
-                                     Text="{Binding Fname, UpdateSourceTrigger=PropertyChanged}"/>
+                                     Text="{Binding NewClient.Fname, UpdateSourceTrigger=PropertyChanged}"/>
 
                             <TextBlock Text="Фамилия: "/>
                             <TextBox Width="150"
                                      HorizontalAlignment="Left"
                                      Margin="0 5"
-                                     Text="{Binding Lname, UpdateSourceTrigger=PropertyChanged}"/>
+                                     Text="{Binding NewClient.Lname, UpdateSourceTrigger=PropertyChanged}"/>
 
                             <TextBlock Text="Отчество: "/>
                             <TextBox Width="150"
                                      HorizontalAlignment="Left"
                                      Margin="0 5"
-                                     Text="{Binding Pname, UpdateSourceTrigger=PropertyChanged}"/>
+                                     Text="{Binding NewClient.Pname, UpdateSourceTrigger=PropertyChanged}"/>
 
                             <TextBlock Text="Номер телефона: "/>
                             <TextBox Width="150"
                                      HorizontalAlignment="Left"
                                      Margin="0 5"
-                                     Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"
+                                     Text="{Binding NewClient.Phone, UpdateSourceTrigger=PropertyChanged}"
                                      MaxLength="11"/>
 
 
@@ -238,7 +237,7 @@
                             <TextBox Width="150"
                                      HorizontalAlignment="Left"
                                      Margin="0 5"
-                                     Text="{Binding Emai, UpdateSourceTrigger=PropertyChanged}"/>
+                                     Text="{Binding NewClient.Emai, UpdateSourceTrigger=PropertyChanged}"/>
 
                             <Button Content="Добавить"
                                     Width="150"
@@ -308,7 +307,7 @@
                                             <TextBox Margin="0 5"
                                                      Width="150"
                                                      HorizontalAlignment="Left"
-                                                     Text="{Binding ClientIdForAddOrder}"/>
+                                                     Text="{Binding ClientIdForAddOrder, UpdateSourceTrigger=PropertyChanged}"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="1">
@@ -316,27 +315,32 @@
                                             <TextBox Margin=" 0 5"
                                                      Width="150"
                                                      HorizontalAlignment="Left"
-                                                     Text="{Binding Mass[0]}"/>
+                                                     Text="{Binding Mass[0],
+                                                            UpdateSourceTrigger=PropertyChanged}"/>
 
                                             <TextBox Margin=" 0 5"
                                                      Width="150"
                                                      HorizontalAlignment="Left"
-                                                     Text="{Binding Mass[1]}"/>
+                                                     Text="{Binding Mass[1],
+                                                            UpdateSourceTrigger=PropertyChanged}"/>
 
                                             <TextBox Margin=" 0 5"
                                                      Width="150"
                                                      HorizontalAlignment="Left"
-                                                     Text="{Binding Mass[2]}"/>
+                                                     Text="{Binding Mass[2],
+                                                     UpdateSourceTrigger=PropertyChanged}"/>
 
                                             <TextBox Margin=" 0 5"
                                                      Width="150"
                                                      HorizontalAlignment="Left"
-                                                     Text="{Binding Mass[3]}"/>
+                                                     Text="{Binding Mass[3],
+                                                            UpdateSourceTrigger=PropertyChanged}"/>
 
                                             <TextBox Margin=" 0 5"
                                                      Width="150"
                                                      HorizontalAlignment="Left"
-                                                     Text="{Binding Mass[4]}"/>
+                                                     Text="{Binding Mass[4],
+                                                     UpdateSourceTrigger=PropertyChanged}"/>
 
                                         </StackPanel>
 
@@ -429,12 +433,14 @@
 
                             <TextBox Width="150"
                                      Height="25"
-                                     Margin="10"/>
+                                     Margin="10"
+                                     Text="{Binding TableName, UpdateSourceTrigger=PropertyChanged}"/>
 
                             <Button Content="Delete" 
                                     Width="125"
                                     Height="25"
-                                    Margin="10"/>
+                                    Margin="10"
+                                    Command="{Binding DeleteEvrethingFromTableCommand}"/>
                         </StackPanel>
 
                     </GroupBox>

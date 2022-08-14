@@ -21,6 +21,11 @@ namespace SeventeenthModule.ViewModel
         #region Private поля
 
         private DataSet _tables;
+        private JoinCommands _join;
+        private InsertCommands _insertCommand;
+        private Client _sqlclient;
+        private Client _newclient;
+
         private string _fname;
         private string _lname;
         private string _phone;
@@ -29,10 +34,10 @@ namespace SeventeenthModule.ViewModel
         private int[] _mass;
         private int _id;
         private int _clientidforaddorder;
-        private Client _sqlclient;
         private int _deleteid;
-        private JoinCommands _join;
-        private InsertCommands _insertCommand;
+        private string _tablename;
+
+
         #endregion
 
         #region Основные свойства
@@ -74,12 +79,24 @@ namespace SeventeenthModule.ViewModel
             set { _insertCommand = value; }
         }
 
+        CheckService Check { get; set; }
+
 
 
         #endregion
 
         #region Свойства команды добавления клиента
 
+
+        public Client NewClient
+        {
+            get => _newclient;
+            set
+            {
+                _newclient = value;
+                OnPropertyChanged();
+            }
+        }
         public string Fname
         {
             get => _fname;
@@ -90,7 +107,7 @@ namespace SeventeenthModule.ViewModel
                 OnPropertyChanged();
 
             }
-        }     
+        }
 
         public string Lname
         {
@@ -154,7 +171,7 @@ namespace SeventeenthModule.ViewModel
             }
         }
 
-        public Client SqlClient
+        public Client ClientWichWillChange
         {
             get { return _sqlclient; }
             set
@@ -172,7 +189,7 @@ namespace SeventeenthModule.ViewModel
         {
             get { return _deleteid; }
             set
-            {             
+            {
                 _deleteid = value;
 
                 OnPropertyChanged();
@@ -183,12 +200,12 @@ namespace SeventeenthModule.ViewModel
 
         #region Свойства добавления нового заказа
 
-        
+
 
         public int ClientIdForAddOrder
         {
             get { return _clientidforaddorder; }
-            set 
+            set
             {
                 _clientidforaddorder = value;
                 OnPropertyChanged();
@@ -197,7 +214,7 @@ namespace SeventeenthModule.ViewModel
 
 
 
-        public int [] Mass
+        public int[] Mass
         {
             get => _mass;
             set
@@ -211,19 +228,28 @@ namespace SeventeenthModule.ViewModel
 
         #endregion
 
-        #region Свойсвта окна JOIN
-
-
-        /// <summary>
-        /// Основной экземляр класса Join
-        /// </summary>
-        
-
+        #region Свойства окна JOIN
 
         /// <summary>
         /// Свойство для поиска клиента по ID или телефону
         /// </summary>
         public int JoinId { get; set; }
+
+
+        #endregion
+
+        #region Свойства окна удаления таблиц
+
+
+        public string TableName
+        {
+            get => _tablename;
+            set
+            {
+                _tablename = value;
+                OnPropertyChanged();
+            }
+        }
 
 
         #endregion
@@ -237,29 +263,26 @@ namespace SeventeenthModule.ViewModel
 
         public ICommand AddsClientCommand { get; }
 
-        private bool CanAddsClientExecute(object p)
-        {
-            return true;
-        }
+        private bool CanAddsClientExecute(object p) => Check.CheckOnEmpty(NewClient);
+
 
         private void OnAddsClientExecuted(object p)
         {
-            SqlInsert.IstertNewClient(Fname, Lname, Pname, Phone, Emai, DataBase.Tables["Clients"]);
+            SqlInsert.IstertNewClient(NewClient, DataBase.Tables["Clients"]);
+
         }
 
         #endregion
 
         #region Команда поиска клиента для редактирования по ID
-
-       
-
-
+ 
         public ICommand SearchClientByIdForEditingCommand { get; }
 
-        public bool CanSearchClientByIdForEditingExecuted(object p) => true;
+        public bool CanSearchClientByIdForEditingExecuted(object p) => Check.CheckClientId(Id);
+        
         public void OnSearchClientByIdForEditingExecute(object p)
         {
-            SqlClient = SqlSelect.SearchClientsById(SqlClient, Id);
+            ClientWichWillChange = SqlSelect.SearchClientsById(ClientWichWillChange, Id);
         }
 
 
@@ -270,11 +293,11 @@ namespace SeventeenthModule.ViewModel
         public ICommand EditClientDataCommand { get; }
 
 
-        public bool CanEditClientDataExecute(object p) => true;
+        public bool CanEditClientDataExecute(object p) => Check.CheckOnEmpty(ClientWichWillChange);
 
         public void OnEditClientDataExecute(object p)
         {
-            SqlUpdate.EditClientData(SqlClient, Id, DataBase.Tables["Clients"]);
+            SqlUpdate.EditClientData(ClientWichWillChange, Id, DataBase.Tables["Clients"]);
         }
 
         #endregion
@@ -283,7 +306,7 @@ namespace SeventeenthModule.ViewModel
 
         public ICommand DeleteClientCommand { get; }
 
-        public bool CanDeleteClientExecuted(object p) => true;
+        public bool CanDeleteClientExecuted(object p) => Check.CheckClientId(DeleteId);
 
         public void OnDeleteCleientExecute (object p)
         {
@@ -293,18 +316,6 @@ namespace SeventeenthModule.ViewModel
         #endregion
 
         #region Команда соединения клиента по покупкам
-
-        private DataTable _t;
-        public DataTable Table 
-        { 
-            get => _t;
-            
-            set
-            {
-                _t = value;
-                OnPropertyChanged();
-            }
-        }
 
         public ICommand JoinClientByIdCommand { get; }
 
@@ -321,11 +332,35 @@ namespace SeventeenthModule.ViewModel
 
         public  ICommand AddOrderCommand { get; }
 
-        public bool CanAddOrderExecuted(object p) => true;
+        public bool CanAddOrderExecuted(object p)
+        {
+            var count = DataBase.Tables["Products"].Rows;
+
+            for (int i = 0; i < Mass.Length; i++)
+            {
+                if (Mass[i] <= 0 || Mass[i] > count.Count) return false;
+            }
+
+            return Check.CheckClientId(ClientIdForAddOrder);
+        } 
 
         public void OnAddOrderExecute(object p)
         {
             SqlInsert.InsertDataInOrders(Mass,ClientIdForAddOrder, SqlJoin);
+        }
+
+        #endregion
+
+        #region Команда очищения данных из таблиц
+
+        public ICommand DeleteEvrethingFromTableCommand { get; }
+
+        public bool CanDeleteEvrethingFromTableExecuted(object p) => true;
+
+        public void OnDeleteEvrethingFromTableExecute(object p)
+        {
+            SqlDelete.DeleteTable(TableName);
+            
         }
 
         #endregion
@@ -340,15 +375,18 @@ namespace SeventeenthModule.ViewModel
 
             dataWorker = new DataWorker(ShowMessages);
 
-            SqlSelect = new SelectCommands();    
-            SqlClient = new Client();
+            SqlSelect = new SelectCommands();           
             SqlInsert = new InsertCommands();
             SqlUpdate = new UpdateCommands();
             SqlDelete = new DeleteCommands();
             SqlJoin = new JoinCommands();
 
+            NewClient = new Client();
+            ClientWichWillChange = new Client();
+            Check = new CheckService();
+
             Mass = new int[5];           
-            Table = new DataTable();        
+            
             DataBase = SqlSelect.DataSet;
           
             #endregion
@@ -361,6 +399,7 @@ namespace SeventeenthModule.ViewModel
             DeleteClientCommand = new LamdaCommand(OnDeleteCleientExecute, CanDeleteClientExecuted);
             JoinClientByIdCommand = new LamdaCommand(OnJoinClientByIdExecuted, CanJoinClientByIdExecuted);
             AddOrderCommand = new LamdaCommand(OnAddOrderExecute, CanAddOrderExecuted);
+            DeleteEvrethingFromTableCommand = new LamdaCommand(OnDeleteEvrethingFromTableExecute, CanDeleteEvrethingFromTableExecuted);
 
             #endregion
         }

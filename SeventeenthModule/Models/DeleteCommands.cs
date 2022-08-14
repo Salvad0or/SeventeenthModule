@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SeventeenthModule.Models
 {
@@ -46,6 +47,38 @@ namespace SeventeenthModule.Models
             {
 
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// Метод очистки данных в таблицах
+        /// </summary>
+        /// <param name="name"></param>
+        public void DeleteTable(string name)
+        {
+            try
+            {
+                string command = $"DELETE {name}";
+
+                using (SqlConnection connection = new SqlConnection(ConnectionString.ToString()))
+                {
+                    connection.Open();
+
+                    SqlCommand sqlCommand = new SqlCommand(command,connection);
+
+                   // sqlCommand.Parameters.AddWithValue("@name", name);
+
+                    sqlCommand.ExecuteNonQuery();
+
+                    Show?.Invoke($"Данные были удалены из таблицы {name}");
+
+                }
+            }
+
+            catch (Exception e)
+            {
+
+                Show?.Invoke(e.Message);
             }
         }
     }

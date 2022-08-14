@@ -45,14 +45,14 @@ namespace SeventeenthModule.Models
                     ClientsTable.Clear();
                     sqlDataAdapter.Fill(ClientsTable);
 
-                    Show?.Invoke("Клиент успешно добавлен");
+                    Show?.Invoke("Данные клиента успешно изменены");
                 }
 
             }
             catch (Exception e)
             {
 
-                Console.WriteLine(e.Message);
+                Show?.Invoke(e.Message);
             }
         }
     }

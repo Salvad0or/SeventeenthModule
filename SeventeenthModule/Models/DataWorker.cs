@@ -15,19 +15,15 @@ namespace SeventeenthModule.Models
     {
         #region Поля и свойства
 
-        private DataSet _dataSet;
-
         protected static readonly SqlConnectionStringBuilder ConnectionString;
+
+        public delegate void ShowTextMessage(string Message);
 
         protected static ShowTextMessage Show;
 
-        public delegate void ShowTextMessage(string Message);
           
-        public DataSet DataSet
-        {
-            get { return _dataSet; }
-            protected set { _dataSet = value; }
-        }
+        public DataSet DataSet { get; protected set; }
+      
 
         #endregion
 
