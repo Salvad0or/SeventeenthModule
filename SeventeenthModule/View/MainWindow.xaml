@@ -379,7 +379,8 @@
                                     <TextBox Width="85"
                                              Margin="7 0"
                                              MaxLength="11"
-                                             Text="{Binding JoinId}"/>
+                                             Text="{Binding JoinId,
+                                                    UpdateSourceTrigger =PropertyChanged}"/>
 
                                     <Button Content="OK"
                                             Width="75" 

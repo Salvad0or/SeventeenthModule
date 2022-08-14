@@ -319,7 +319,7 @@ namespace SeventeenthModule.ViewModel
 
         public ICommand JoinClientByIdCommand { get; }
 
-        public bool CanJoinClientByIdExecuted(object p) => true;
+        public bool CanJoinClientByIdExecuted(object p) => Check.CheckClientId(JoinId);
 
         public void OnJoinClientByIdExecuted(object p)
         {

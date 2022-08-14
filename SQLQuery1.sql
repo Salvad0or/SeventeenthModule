@@ -1,4 +1,11 @@
-﻿SELECT Fname, Lname, Pname, Phone, Emai, o.Id OrderId,[Date],ProductId,Clientid FROM [Clients] c  
-JOIN [Orders] o  
-ON c.Id = o.Clientid  
-WHERE c.Id = 1
+﻿CREATE TABLE TestTable(
+Id int ,
+[Name] nvarchar(250))
+
+SELECT * FROM  TestTable
+
+INSERT INTO [TestTable]
+VALUES
+(1,'123')
+
+DELETE TestTable
