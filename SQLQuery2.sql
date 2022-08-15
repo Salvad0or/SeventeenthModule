@@ -1,0 +1,5 @@
+﻿SELECT * FROM TestTable
+
+INSERT INTO TestTable
+VALUES
+(1,'1')
