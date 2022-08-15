@@ -201,7 +201,9 @@ namespace SeventeenthModule.ViewModel
         #region Свойства добавления нового заказа
 
 
-
+        /// <summary>
+        /// Айди клиента которому додавляют новый заказ
+        /// </summary>
         public int ClientIdForAddOrder
         {
             get { return _clientidforaddorder; }
@@ -213,7 +215,9 @@ namespace SeventeenthModule.ViewModel
         }
 
 
-
+        /// <summary>
+        /// Массив для Id заказов
+        /// </summary>
         public int[] Mass
         {
             get => _mass;
@@ -240,7 +244,9 @@ namespace SeventeenthModule.ViewModel
 
         #region Свойства окна удаления таблиц
 
-
+        /// <summary>
+        /// Имя таблицы
+        /// </summary>
         public string TableName
         {
             get => _tablename;
@@ -251,11 +257,12 @@ namespace SeventeenthModule.ViewModel
             }
         }
 
+        string[] TableNames { get; set; }
+
 
         #endregion
 
         #endregion
-
 
         #region Команды
 
@@ -355,18 +362,17 @@ namespace SeventeenthModule.ViewModel
 
         public ICommand DeleteEvrethingFromTableCommand { get; }
 
-        public bool CanDeleteEvrethingFromTableExecuted(object p) => true;
+        public bool CanDeleteEvrethingFromTableExecuted(object p) => Check.CheckTableName(SqlSelect, TableName);
 
         public void OnDeleteEvrethingFromTableExecute(object p)
         {
             SqlDelete.DeleteTable(TableName);
-            
+            TableName = String.Empty;
         }
 
         #endregion
 
         #endregion
-
 
         #region Конструктор
         public MainWindowViewModel()
@@ -388,7 +394,6 @@ namespace SeventeenthModule.ViewModel
             Mass = new int[5];           
             
             DataBase = SqlSelect.DataSet;
-          
             #endregion
 
             #region Объявление команд

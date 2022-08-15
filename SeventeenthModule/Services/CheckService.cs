@@ -53,6 +53,11 @@ namespace SeventeenthModule.Services
             }
         }
 
+        /// <summary>
+        /// Проверяет данные на пустоту. Работникам нельзя добавлять пустые данные в таблицы
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
         public bool CheckOnEmpty(Client client)
         {
             Type myType = typeof(Client);
@@ -78,6 +83,24 @@ namespace SeventeenthModule.Services
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Проверяем совпадает ли название таблицы в которой собираются почистить все данные.
+        /// </summary>
+        /// <param name="select"></param>
+        /// <param name="TableName"></param>
+        /// <returns></returns>
+        public bool CheckTableName(SelectCommands select,string TableName)
+        {
+            string name = TableName ??= String.Empty;
+
+            for (int i = 0; i < select.TablesNames.Length; i++)
+            {
+                if (Equals(select.TablesNames[i].ToLower(), name.ToLower())) return true;               
+            }
+
+            return false;
         }
     }
 }
