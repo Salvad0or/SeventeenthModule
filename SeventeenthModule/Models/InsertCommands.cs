@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using SeventeenthModule.EntityObjects;
 using SeventeenthModule.Services;
 using System;
 using System.Collections.Generic;
@@ -22,38 +23,30 @@ namespace SeventeenthModule.Models
         {
             try
             {
-                string command =
-                    "INSERT INTO [Orders] " +
-                    "(ProductId, Clientid) " +
-                    "VALUES" +
-                    "(@product, @client)";
-
-                string selectCommand = "SELECT * FROM Orders";
-
-                using (SqlConnection connection = new SqlConnection(ConnectionString.ToString()))
+               
+                using (Context context = new Context())
                 {
-                    connection.Open();
+                    List<Order> orders = new List<Order>();
 
                     for (int i = 0; i < 5; i++)
                     {
                         if (mass[i] == 0) continue;
 
-                        SqlCommand insertCommand = new SqlCommand(command, connection);
+                        orders.Add(new Order()
+                        {
+                            ProductId = mass[i],
+                            Clientid = id
+                        });
 
-                        insertCommand.Parameters.AddWithValue("@product", mass[i]);
-                        insertCommand.Parameters.AddWithValue("@client", id);
-
-                        insertCommand.ExecuteNonQuery();
-                        
                     }
 
-                    JoinTable.InitializeJoinTableByAllOrders();
+                    context.SaveChanges();
 
                 }
             }
             catch (Exception e)
             {
-                //MessageBox.Show(e.Message);
+                
                 Show?.Invoke(e.Message);
             }
         }
@@ -67,33 +60,16 @@ namespace SeventeenthModule.Models
         /// <param name="phone"></param>
         /// <param name="emai"></param>
         /// <param name="ClientsTable"></param>
-        public void IstertNewClient(Client NewClient, DataTable ClientsTable)
+        public void IstertNewClient(EntityClient NewClient)
         {
-
-            string InsertCommand = "INSERT INTO [Clients] (Fname,Lname,Pname,Phone,Emai) VALUES (@fname, @lname, @pname, @phone, @emai)";
-            string SelectCommand = "SELECT * FROM Clients";
-
 
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(ConnectionString.ToString()))
+                using (Context context = new Context())
                 {
-                    sqlConnection.Open();
+                    context.Clients.Add(NewClient);
 
-                    SqlCommand command = new SqlCommand(InsertCommand, sqlConnection);
-                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(SelectCommand, sqlConnection);
-
-                    command.Parameters.AddWithValue("@fname", NewClient.Fname);
-                    command.Parameters.AddWithValue("@lname", NewClient.Lname);
-                    command.Parameters.AddWithValue("@pname", NewClient.Pname);
-                    command.Parameters.AddWithValue("@phone", NewClient.Phone);
-                    command.Parameters.AddWithValue("@emai", NewClient.Emai);
-
-                    command.ExecuteNonQuery();
-
-                    ClientsTable.Clear();
-
-                    sqlDataAdapter.Fill(ClientsTable);
+                    context.SaveChanges();
 
                     Show?.Invoke("Клиент успешно добавлен");
                 }

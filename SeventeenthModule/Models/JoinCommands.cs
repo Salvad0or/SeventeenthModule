@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using SeventeenthModule.EntityObjects;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,6 +18,7 @@ namespace SeventeenthModule.Models
         /// </summary>
         public DataSet JoinTables { get; private set; }
 
+        public List<EntityClient> entityClient { get; private set; }
         #endregion
 
         #region Конструкторы

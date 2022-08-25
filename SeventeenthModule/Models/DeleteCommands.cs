@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using SeventeenthModule.EntityObjects;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,37 +17,30 @@ namespace SeventeenthModule.Models
         /// </summary>
         /// <param name="id"></param>
         /// <param name="ClientsTable"></param>
-        public void DeleteClient(int id, DataTable ClientsTable)
+        public void DeleteClient(int id)
         {
             try
             {
-                string SelectCommand = "SELECT * FROM [Clients]";
-                string DeleteCommand = "DELETE [Clients] WHERE Id = @id";
-
-
-                using (SqlConnection connection = new SqlConnection(ConnectionString.ToString()))
+          
+                using (Context context = new Context())
                 {
-                    connection.Open();
 
-                    SqlCommand sqlCommand = new SqlCommand(DeleteCommand, connection);
-                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(SelectCommand, connection);
+                    var client = context.Clients.FirstOrDefault(p => p.Id == id);
 
-                    sqlCommand.Parameters.AddWithValue("@id", id);
-
-                    sqlCommand.ExecuteNonQuery();
-
-                    ClientsTable.Clear();
-
-                    sqlDataAdapter.Fill(ClientsTable);
+                    if (client is null) return;
+                    
+                    context.Clients.Remove(client);
 
                     Show?.Invoke("Клиент был удален");
 
+                    context.SaveChanges();
+
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
-                throw;
+                Show?.Invoke(e.Message);
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using SeventeenthModule.EntityObjects;
 using SeventeenthModule.Services;
 using System;
 using System.Collections.Generic;

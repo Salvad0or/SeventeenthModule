@@ -1,4 +1,5 @@
-﻿using SeventeenthModule.Infrastructure;
+﻿using SeventeenthModule.EntityObjects;
+using SeventeenthModule.Infrastructure;
 using SeventeenthModule.Models;
 using SeventeenthModule.Services;
 using SeventeenthModule.ViewModel.Base;
