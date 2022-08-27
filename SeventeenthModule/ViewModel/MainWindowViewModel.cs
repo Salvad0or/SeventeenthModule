@@ -393,14 +393,16 @@ namespace SeventeenthModule.ViewModel
 
         public bool CanAddOrderExecuted(object p)
         {
-            var count = DataBase.Tables["Products"].Rows;
+            //var count = DataBase.Tables["Products"].Rows;
 
-            for (int i = 0; i < Mass.Length; i++)
-            {
-                if (Mass[i] <= 0 || Mass[i] > count.Count) return false;
-            }
+            //for (int i = 0; i < Mass.Length; i++)
+            //{
+            //    if (Mass[i] <= 0 || Mass[i] > count.Count) return false;
+            //}
 
-            return Check.CheckClientId(ClientIdForAddOrder);
+
+            return true;
+            //return Check.CheckClientId(ClientIdForAddOrder);
         } 
 
         public void OnAddOrderExecute(object p)

@@ -30,7 +30,7 @@ namespace SeventeenthModule.Models
 
         public int Clientid { get; set; }
 
-        public  List<JoinCommands> [] JoinTables { get; set; }
+        public  List<JoinCommands> AllOrdersTable { get; set; }
 
         #endregion
 
@@ -38,8 +38,8 @@ namespace SeventeenthModule.Models
 
         public JoinCommands()
         {
-            JoinTables = new List<JoinCommands>[2];
         }
+        
 
         #endregion
 
@@ -106,9 +106,10 @@ namespace SeventeenthModule.Models
                 using (Context context = new Context())
                 {
                   
-                    JoinTables[0] = (from c in context.Clients
+                    AllOrdersTable = (from c in context.Clients
                                      join o in context.Orders
-                                     on c.Id equals o.Id
+                                     on c.Id equals o.Clientid
+                                     orderby c.Id
                                      select new JoinCommands
                                      {
                                          Id = c.Id,

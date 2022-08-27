@@ -27,20 +27,19 @@ namespace SeventeenthModule.Models
                
                 using (Context context = new Context())
                 {
-                    List<Order> orders = new List<Order>();
-
+                    
                     for (int i = 0; i < 5; i++)
                     {
                         if (mass[i] == 0) continue;
 
-                        orders.Add(new Order()
+                        context.Orders.Add(new Order()
                         {
                             ProductId = mass[i],
                             Clientid = id
                         });
 
                     }
-
+                    
                     context.SaveChanges();
 
                 }
