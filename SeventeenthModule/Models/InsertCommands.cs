@@ -3,6 +3,7 @@ using SeventeenthModule.EntityObjects;
 using SeventeenthModule.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -60,7 +61,7 @@ namespace SeventeenthModule.Models
         /// <param name="phone"></param>
         /// <param name="emai"></param>
         /// <param name="ClientsTable"></param>
-        public void IstertNewClient(EntityClient NewClient)
+        public List<EntityClient> IstertNewClient(EntityClient NewClient, List<EntityClient> ClientsFromBaseClass)
         {
 
             try
@@ -71,13 +72,18 @@ namespace SeventeenthModule.Models
 
                     context.SaveChanges();
 
+                    List<EntityClient> Clients = context.Clients.ToList();
+
                     Show?.Invoke("Клиент успешно добавлен");
+
+                    return Clients;
                 }
             }
             catch (Exception e)
             {
 
                 MessageBox.Show(e.Message);
+                return ClientsFromBaseClass;
             }
         }
 

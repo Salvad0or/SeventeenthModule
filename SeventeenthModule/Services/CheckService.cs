@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using SeventeenthModule.EntityObjects;
 using SeventeenthModule.Models;
 using System;
 using System.Collections.Generic;
@@ -58,9 +59,9 @@ namespace SeventeenthModule.Services
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public bool CheckOnEmpty(Client client)
+        public bool CheckOnEmpty(EntityClient client)
         {
-            Type myType = typeof(Client);
+            Type myType = typeof(EntityClient);
 
             var nameProp = myType.GetProperty("Fname");
             var lnameProp = myType.GetProperty("Lname");

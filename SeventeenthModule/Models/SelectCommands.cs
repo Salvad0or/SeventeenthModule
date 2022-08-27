@@ -68,7 +68,7 @@ namespace SeventeenthModule.Models
         /// <param name="client"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Client SearchClientsById(Client client, int id)
+        public EntityClient SearchClientsById(EntityClient client, int id)
         {
 
             string SelectCommand = $"SELECT * FROM [Clients] WHERE ID = {id}";

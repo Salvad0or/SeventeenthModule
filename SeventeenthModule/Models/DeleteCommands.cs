@@ -17,7 +17,7 @@ namespace SeventeenthModule.Models
         /// </summary>
         /// <param name="id"></param>
         /// <param name="ClientsTable"></param>
-        public void DeleteClient(int id)
+        public List<EntityClient> DeleteClient(int id, List<EntityClient> ClientsFromBase)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace SeventeenthModule.Models
 
                     var client = context.Clients.FirstOrDefault(p => p.Id == id);
 
-                    if (client is null) return;
+                    if (client is null) return ClientsFromBase;
                     
                     context.Clients.Remove(client);
 
@@ -35,12 +35,17 @@ namespace SeventeenthModule.Models
 
                     context.SaveChanges();
 
+                    List<EntityClient> Clients = context.Clients.ToList();
+
+                    return Clients;
+
                 }
             }
             catch (Exception e)
             {
 
                 Show?.Invoke(e.Message);
+                return ClientsFromBase;
             }
         }
 

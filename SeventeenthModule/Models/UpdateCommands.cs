@@ -19,34 +19,22 @@ namespace SeventeenthModule.Models
       /// <param name="client"></param>
       /// <param name="id"></param>
       /// <param name="ClientsTable"></param>
-        public void EditClientData(Client client, int id, DataTable ClientsTable)
+        public List<EntityClient> EditClientData(int id, EntityClient entityClient, List<EntityClient> ClientsFromBase)
         {
             try
             {
-                string SelectCommand = "SELECT * FROM Clients";
-                string UpdateCommand = "UPDATE [Clients] SET Fname = @fname, Lname = @lname, Pname = @pname, Phone = @phone, Emai = @emai " +
-                    "WHERE Id = @id";
-
-                using (SqlConnection connection = new SqlConnection(ConnectionString.ToString()))
+                using (Context context = new Context())
                 {
-                    connection.Open();
+                    entityClient.Id = id;
 
-                    SqlCommand sqlCommand = new SqlCommand(UpdateCommand, connection);
-                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(SelectCommand, connection);
+                    context.Update(entityClient);
 
-                    sqlCommand.Parameters.AddWithValue("@fname", client.Fname);
-                    sqlCommand.Parameters.AddWithValue("@lname", client.Lname);
-                    sqlCommand.Parameters.AddWithValue("@pname", client.Pname);
-                    sqlCommand.Parameters.AddWithValue("@phone", client.Phone);
-                    sqlCommand.Parameters.AddWithValue("@emai", client.Emai);
-                    sqlCommand.Parameters.AddWithValue("@id", id);
+                    context.SaveChanges();
 
-                    sqlCommand.ExecuteNonQuery();
+                    List<EntityClient> Clients = context.Clients.ToList();
 
-                    ClientsTable.Clear();
-                    sqlDataAdapter.Fill(ClientsTable);
+                    return Clients;
 
-                    Show?.Invoke("Данные клиента успешно изменены");
                 }
 
             }
@@ -54,6 +42,7 @@ namespace SeventeenthModule.Models
             {
 
                 Show?.Invoke(e.Message);
+                return ClientsFromBase;
             }
         }
     }

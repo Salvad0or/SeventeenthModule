@@ -13,26 +13,32 @@ namespace SeventeenthModule.Models
     {
         #region Свойства
 
-        /// <summary>
-        /// Таблица хранит все сущности JOIN'ов
-        /// </summary>
-        public DataSet JoinTables { get; private set; }
+        public int Id { get; set; }
+        public string Fname { get; set; }
+        public string Lname { get; set; }
 
-        public List<EntityClient> entityClient { get; private set; }
+        public string Pname { get; set; }
+
+        public string Emai { get; set; }
+        public string Phone { get; set; }
+
+        public int OrderId { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public int ProductId { get; set; }
+
+        public int Clientid { get; set; }
+
+        public  List<JoinCommands> [] JoinTables { get; set; }
+
         #endregion
 
         #region Конструкторы
 
         public JoinCommands()
         {
-
-            JoinTables = new DataSet();
-
-            JoinTables.Tables.Add("JoinAllOrders");
-            JoinTables.Tables.Add("JoinById");
-
-            InitializeJoinTableByAllOrders();
-
+            JoinTables = new List<JoinCommands>[2];
         }
 
         #endregion
@@ -43,10 +49,9 @@ namespace SeventeenthModule.Models
         /// Находим клиента по ID и вывыводим в таблицы
         /// </summary>
         /// <param name="JoinId"></param>
-        public void JoinTableById(int JoinId)
+        public List<JoinCommands> JoinTableById(int JoinId)
         {
-            DataTable returnTable = new DataTable();
-
+            
             try
             {
                 string command =
@@ -55,22 +60,36 @@ namespace SeventeenthModule.Models
                     "ON c.Id = o.Clientid " +
                     $"WHERE c.Id = {JoinId}";
 
-                using (SqlConnection connection = new SqlConnection(ConnectionString.ToString()))
+                using (Context context = new Context())
+
                 {
-                    connection.Open();              
+                    List <JoinCommands> j = (from c in context.Clients
+                                     join o in context.Orders
+                                     on c.Id equals o.Clientid
+                                     where c.Id == JoinId
 
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter(command, connection);
-
-                    JoinTables.Tables["JoinById"].Clear();
-
-                    dataAdapter.Fill(JoinTables.Tables["JoinById"]);
+                                     select new JoinCommands
+                                     {
+                                         Id = c.Id,
+                                         Fname = c.Fname,
+                                         Lname = c.Lname,
+                                         Pname = c.Pname,
+                                         Emai = c.Emai,
+                                         Phone = c.Phone ?? String.Empty,
+                                         OrderId = o.Id,
+                                         Date = o.Date ?? DateTime.Now,
+                                         ProductId = o.ProductId ?? default,
+                                         Clientid = o.Clientid ?? default
+                                     }).ToList();    
+                    return j;
                 }
             }
             catch (Exception e)
             {
 
                 Show?.Invoke(e.Message);
-               
+                return null;
+
             }
 
             
@@ -81,30 +100,33 @@ namespace SeventeenthModule.Models
         /// </summary>
         public void InitializeJoinTableByAllOrders ()
         {
-            string command =
-                    "SELECT c.Id Id, Fname, Lname, Pname , Phone, Emai Email, o.Id OrderId, [Date], ProductId, Clientid FROM CLIENTS c " +
-                    "JOIN [Orders] o " +
-                    "ON c.Id = o.Clientid";
-
             try
             {
 
-                using (SqlConnection connection = new SqlConnection(ConnectionString.ToString()))
+                using (Context context = new Context())
                 {
-                    connection.Open();
-
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter(command, connection);
-
-                    JoinTables.Tables["JoinAllOrders"].Clear();
-
-                    dataAdapter.Fill(JoinTables.Tables["JoinAllOrders"]);
-
+                  
+                    JoinTables[0] = (from c in context.Clients
+                                     join o in context.Orders
+                                     on c.Id equals o.Id
+                                     select new JoinCommands
+                                     {
+                                         Id = c.Id,
+                                         Fname = c.Fname,
+                                         Lname = c.Lname,
+                                         Pname = c.Pname,
+                                         Emai = c.Emai,
+                                         OrderId = o.Id,
+                                         Date = o.Date ?? DateTime.Now,
+                                         ProductId = o.ProductId ?? default,
+                                         Clientid = o.Clientid ?? default
+                                     }).ToList();
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
-                throw;
+                Show?.Invoke(e.Message);
             }
 
         }

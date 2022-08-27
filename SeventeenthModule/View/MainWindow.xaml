@@ -22,7 +22,7 @@
                 <TabControl Margin="7">
 
                     <TabItem Header="Клиенты">
-                        <DataGrid ItemsSource="{Binding DataBase.Tables[0]}"
+                        <DataGrid ItemsSource="{Binding Clients}"
                                   AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
@@ -36,7 +36,7 @@
                     </TabItem>
 
                     <TabItem Header="Заказы">
-                        <DataGrid ItemsSource="{Binding DataBase.Tables[1]}"
+                        <DataGrid ItemsSource="{Binding Orders}"
                                   AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id заказа" Binding="{Binding Id}"/>
@@ -48,7 +48,7 @@
                     </TabItem>
 
                     <TabItem Header="Список товаров">
-                        <DataGrid ItemsSource="{Binding DataBase.Tables[2]}"
+                        <DataGrid ItemsSource="{Binding Products}"
                                   AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
@@ -265,7 +265,7 @@
 
                     <TabItem Header="Все заказы">
 
-                        <DataGrid ItemsSource="{Binding SqlJoin.JoinTables.Tables[0]}"
+                        <DataGrid ItemsSource="{Binding SqlJoin.JoinTables[0]}"
                                   AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id Клиента" Binding="{Binding Id}"/>
@@ -393,7 +393,7 @@
 
                             <DataGrid DockPanel.Dock="Top"
                                       Margin="0 10"
-                                      ItemsSource="{Binding SqlJoin.JoinTables.Tables[1]}">
+                                      ItemsSource="{Binding JoinById}">
 
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Имя" Binding="{Binding Fname}"/>

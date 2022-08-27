@@ -1,10 +1,12 @@
-﻿using SeventeenthModule.EntityObjects;
+﻿using Microsoft.EntityFrameworkCore;
+using SeventeenthModule.EntityObjects;
 using SeventeenthModule.Infrastructure;
 using SeventeenthModule.Models;
 using SeventeenthModule.Services;
 using SeventeenthModule.ViewModel.Base;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -17,6 +19,7 @@ namespace SeventeenthModule.ViewModel
     internal class MainWindowViewModel : ViewModels
     {
 
+       
         #region Поля и свойства
 
         #region Private поля
@@ -24,9 +27,13 @@ namespace SeventeenthModule.ViewModel
         private DataSet _tables;
         private JoinCommands _join;
         private InsertCommands _insertCommand;
-        private Client _sqlclient;
-        private Client _newclient;
+        private EntityClient _sqlclient;
+        private EntityClient _newclient;
+        private List<EntityClient> _clients;
+        private List<Order> _orders;
+        private List<Product> _products;
 
+        private List<JoinCommands> _joinbyid;
         private string _fname;
         private string _lname;
         private string _phone;
@@ -42,6 +49,42 @@ namespace SeventeenthModule.ViewModel
         #endregion
 
         #region Основные свойства
+
+        #region Коллекции хранящие сущности таблиц базы
+        public List<EntityClient> Clients
+        {
+            get => _clients;
+
+            set
+            {
+                _clients = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<Order> Orders
+        {
+            get { return _orders; }
+            set
+            {
+                _orders = value;
+                OnPropertyChanged();
+                
+            }
+        }
+
+        public List<Product> Products
+        {
+            get { return _products; }
+            set
+            {
+                _products = value;
+                OnPropertyChanged();
+                
+            }
+        }
+
+        #endregion
 
 
         DataWorker dataWorker { get; set; }
@@ -89,7 +132,7 @@ namespace SeventeenthModule.ViewModel
         #region Свойства команды добавления клиента
 
 
-        public Client NewClient
+        public EntityClient NewClient
         {
             get => _newclient;
             set
@@ -172,7 +215,7 @@ namespace SeventeenthModule.ViewModel
             }
         }
 
-        public Client ClientWichWillChange
+        public EntityClient ClientWichWillChange
         {
             get { return _sqlclient; }
             set
@@ -239,6 +282,16 @@ namespace SeventeenthModule.ViewModel
         /// Свойство для поиска клиента по ID или телефону
         /// </summary>
         public int JoinId { get; set; }
+       
+        public List<JoinCommands> JoinById
+        {
+            get => _joinbyid;
+            set
+            {
+                _joinbyid = value;
+                OnPropertyChanged();
+            }
+        }
 
 
         #endregion
@@ -271,19 +324,15 @@ namespace SeventeenthModule.ViewModel
 
         public ICommand AddsClientCommand { get; }
 
-        private bool CanAddsClientExecute(object p) => Check.CheckOnEmpty(NewClient);
+        private bool CanAddsClientExecute(object p) => true; //Check.CheckOnEmpty(NewClient);
 
 
-        private void OnAddsClientExecuted(object p)
-        {
-            SqlInsert.IstertNewClient(NewClient, DataBase.Tables["Clients"]);
-
-        }
+        private void OnAddsClientExecuted(object p) => Clients = SqlInsert.IstertNewClient(NewClient, Clients);
 
         #endregion
 
         #region Команда поиска клиента для редактирования по ID
- 
+
         public ICommand SearchClientByIdForEditingCommand { get; }
 
         public bool CanSearchClientByIdForEditingExecuted(object p) => Check.CheckClientId(Id);
@@ -301,12 +350,12 @@ namespace SeventeenthModule.ViewModel
         public ICommand EditClientDataCommand { get; }
 
 
-        public bool CanEditClientDataExecute(object p) => Check.CheckOnEmpty(ClientWichWillChange);
+        public bool CanEditClientDataExecute(object p) => true; //Check.CheckOnEmpty(ClientWichWillChange);
 
-        public void OnEditClientDataExecute(object p)
-        {
-            SqlUpdate.EditClientData(ClientWichWillChange, Id, DataBase.Tables["Clients"]);
-        }
+        public void OnEditClientDataExecute(object p) => Clients = SqlUpdate.EditClientData(Id, ClientWichWillChange, Clients);
+
+
+
 
         #endregion
 
@@ -318,7 +367,7 @@ namespace SeventeenthModule.ViewModel
 
         public void OnDeleteCleientExecute (object p)
         {
-            SqlDelete.DeleteClient(DeleteId, DataBase.Tables["Clients"]);
+            Clients = SqlDelete.DeleteClient(DeleteId, Clients);
             DeleteId = 0;
         }
         #endregion
@@ -327,11 +376,13 @@ namespace SeventeenthModule.ViewModel
 
         public ICommand JoinClientByIdCommand { get; }
 
-        public bool CanJoinClientByIdExecuted(object p) => Check.CheckClientId(JoinId);
+        public bool CanJoinClientByIdExecuted(object p) => true;//Check.CheckClientId(JoinId);
+
+       
 
         public void OnJoinClientByIdExecuted(object p)
         {
-            SqlJoin.JoinTableById(JoinId);
+            JoinById = SqlJoin.JoinTableById(JoinId);
         }
 
         #endregion
@@ -380,16 +431,26 @@ namespace SeventeenthModule.ViewModel
         {
             #region инициализация всех объектов
 
+
+            using (Context context = new Context())
+            { 
+                Clients = context.Clients.ToList();
+                Orders = context.Orders.ToList();
+                Products = context.Products.ToList();
+            }
+
             dataWorker = new DataWorker(ShowMessages);
 
             SqlSelect = new SelectCommands();           
             SqlInsert = new InsertCommands();
             SqlUpdate = new UpdateCommands();
             SqlDelete = new DeleteCommands();
-            SqlJoin = new JoinCommands();
 
-            NewClient = new Client();
-            ClientWichWillChange = new Client();
+            SqlJoin = new JoinCommands();
+            SqlJoin.InitializeJoinTableByAllOrders();
+
+            NewClient = new EntityClient();
+            ClientWichWillChange = new EntityClient();
             Check = new CheckService();
 
             Mass = new int[5];           
@@ -409,6 +470,8 @@ namespace SeventeenthModule.ViewModel
 
             #endregion
         }
+
+       
         #endregion
 
         #region Вспомогательные методы
