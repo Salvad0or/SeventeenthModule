@@ -33,6 +33,8 @@ namespace SeventeenthModule.Models
 
                     List<EntityClient> Clients = context.Clients.ToList();
 
+                    Show?.Invoke($"Данные клиента {entityClient.Fname} были изменены успешно");
+
                     return Clients;
 
                 }

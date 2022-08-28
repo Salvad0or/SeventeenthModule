@@ -59,15 +59,11 @@ namespace SeventeenthModule.Models
             {
                 string command = $"DELETE {name}";
 
-                using (SqlConnection connection = new SqlConnection(ConnectionString.ToString()))
+                using (Context context = new Context())
                 {
-                    connection.Open();
+                    context.Remove(nameof(name));
 
-                    SqlCommand sqlCommand = new SqlCommand(command,connection);
-
-                   // sqlCommand.Parameters.AddWithValue("@name", name);
-
-                    sqlCommand.ExecuteNonQuery();
+                    context.SaveChanges();
 
                     Show?.Invoke($"Данные были удалены из таблицы {name}");
 

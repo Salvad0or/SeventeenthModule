@@ -18,13 +18,22 @@ namespace SeventeenthModule.ViewModel
 {
     internal class MainWindowViewModel : ViewModels
     {
-
-       
         #region Поля и свойства
+
+        #region Делегаты
+
+        /// <summary>
+        /// Делегат отчистки классов которые привязаны к каким либо текст боксам.
+        /// </summary>
+        /// <returns></returns>
+        public delegate EntityClient ClearData();
+        ClearData Clear;
+
+        #endregion
 
         #region Private поля
 
-        private DataSet _tables;
+        
         private JoinCommands _join;
         private InsertCommands _insertCommand;
         private EntityClient _sqlclient;
@@ -32,6 +41,7 @@ namespace SeventeenthModule.ViewModel
         private List<EntityClient> _clients;
         private List<Order> _orders;
         private List<Product> _products;
+        private List<JoinCommands> _allOrdersTable;
 
         private List<JoinCommands> _joinbyid;
         private string _fname;
@@ -86,25 +96,15 @@ namespace SeventeenthModule.ViewModel
 
         #endregion
 
-
         DataWorker dataWorker { get; set; }
+
         SelectCommands SqlSelect { get; set; }
 
         UpdateCommands SqlUpdate { get; set; }
 
         DeleteCommands SqlDelete { get; set; }
 
-        public DataSet DataBase
-        {
-            get { return _tables; }
-            set
-            {
-                if (Equals(_tables, value)) return;
-                _tables = value;
-                OnPropertyChanged();
-
-            }
-        }
+       
 
         public JoinCommands SqlJoin
         {
@@ -130,7 +130,6 @@ namespace SeventeenthModule.ViewModel
         #endregion
 
         #region Свойства команды добавления клиента
-
 
         public EntityClient NewClient
         {
@@ -294,6 +293,18 @@ namespace SeventeenthModule.ViewModel
         }
 
 
+        
+        public List<JoinCommands> AllOrdersTable
+        {
+            get => _allOrdersTable;
+            set
+            {
+                _allOrdersTable = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         #endregion
 
         #region Свойства окна удаления таблиц
@@ -324,10 +335,15 @@ namespace SeventeenthModule.ViewModel
 
         public ICommand AddsClientCommand { get; }
 
-        private bool CanAddsClientExecute(object p) => true; //Check.CheckOnEmpty(NewClient);
+        private bool CanAddsClientExecute(object p) => Check.CheckOnEmpty(NewClient);
 
 
-        private void OnAddsClientExecuted(object p) => Clients = SqlInsert.IstertNewClient(NewClient, Clients);
+        private void OnAddsClientExecuted(object p)
+        {
+            Clients = SqlInsert.IstertNewClient(NewClient, Clients);
+            NewClient = Clear?.Invoke();
+        }
+            
 
         #endregion
 
@@ -350,12 +366,14 @@ namespace SeventeenthModule.ViewModel
         public ICommand EditClientDataCommand { get; }
 
 
-        public bool CanEditClientDataExecute(object p) => true; //Check.CheckOnEmpty(ClientWichWillChange);
+        public bool CanEditClientDataExecute(object p) => Check.CheckOnEmpty(ClientWichWillChange);
 
-        public void OnEditClientDataExecute(object p) => Clients = SqlUpdate.EditClientData(Id, ClientWichWillChange, Clients);
-
-
-
+        public void OnEditClientDataExecute(object p)
+        {
+            Clients = SqlUpdate.EditClientData(Id, ClientWichWillChange, Clients);
+            ClientWichWillChange = Clear?.Invoke();
+            Id = default;
+        } 
 
         #endregion
 
@@ -407,16 +425,17 @@ namespace SeventeenthModule.ViewModel
 
         public void OnAddOrderExecute(object p)
         {
-            SqlInsert.InsertDataInOrders(Mass,ClientIdForAddOrder, SqlJoin);
+            SqlInsert.InsertDataInOrders(Mass,ClientIdForAddOrder);
+            AllOrdersTable = SqlJoin.InitializeJoinTableByAllOrders();
         }
 
         #endregion
 
-        #region Команда очищения данных из таблиц
+        #region Команда очистки данных из таблиц
 
         public ICommand DeleteEvrethingFromTableCommand { get; }
 
-        public bool CanDeleteEvrethingFromTableExecuted(object p) => Check.CheckTableName(SqlSelect, TableName);
+        public bool CanDeleteEvrethingFromTableExecuted(object p) => Check.CheckTableName(TableName);
 
         public void OnDeleteEvrethingFromTableExecute(object p)
         {
@@ -433,7 +452,6 @@ namespace SeventeenthModule.ViewModel
         {
             #region инициализация всех объектов
 
-
             using (Context context = new Context())
             { 
                 Clients = context.Clients.ToList();
@@ -447,17 +465,17 @@ namespace SeventeenthModule.ViewModel
             SqlInsert = new InsertCommands();
             SqlUpdate = new UpdateCommands();
             SqlDelete = new DeleteCommands();
-
             SqlJoin = new JoinCommands();
-            SqlJoin.InitializeJoinTableByAllOrders();
+
+            AllOrdersTable = SqlJoin.InitializeJoinTableByAllOrders();
+            Clear = ClearMethod;
 
             NewClient = new EntityClient();
             ClientWichWillChange = new EntityClient();
             Check = new CheckService();
 
             Mass = new int[5];           
-            
-            DataBase = SqlSelect.DataSet;
+                      
             #endregion
 
             #region Объявление команд
@@ -472,8 +490,7 @@ namespace SeventeenthModule.ViewModel
 
             #endregion
         }
-
-       
+     
         #endregion
 
         #region Вспомогательные методы
@@ -481,6 +498,12 @@ namespace SeventeenthModule.ViewModel
         public void ShowMessages(string message)
         {
             MessageBox.Show(message);
+        }
+
+        public EntityClient ClearMethod()
+        {
+            EntityClient c = new EntityClient();
+            return c;
         }
 
         #endregion

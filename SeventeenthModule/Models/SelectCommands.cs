@@ -13,55 +13,7 @@ namespace SeventeenthModule.Models
 {
     internal class SelectCommands : DataWorker
     {
-
-        public string [] TablesNames { get; private set; }
-
-        /// <summary>
-        /// Задаем все три таблицы SELECT в данном конструкторе
-        /// </summary>
-        public SelectCommands()
-        {
-            try
-            {
-                string[] commands =
-                {
-                "SELECT * FROM Clients",
-                "SELECT * FROM Orders",
-                "SELECT * FROM Products"
-                };
-
-                using (SqlConnection sqlConnection = new SqlConnection(ConnectionString.ToString()))
-                {
-
-                    sqlConnection.Open();
-          
-                    DataSet = new DataSet();
-
-                    DataSet.Tables.Add("Clients");
-                    DataSet.Tables.Add("Orders");
-                    DataSet.Tables.Add("Products");
-
-                    TablesNames = new string[DataSet.Tables.Count];
-
-                    for (int i = 0; i < 3; i++)
-                    {
-                        SqlDataAdapter DataAdapter = new SqlDataAdapter(commands[i], sqlConnection);
-                        DataAdapter.Fill(DataSet.Tables[i]);
-                        TablesNames[i] = DataSet.Tables[i].TableName;
-
-                    }
-
-
-                }
-            }
-            catch (Exception e)
-            {
-
-                Show?.Invoke(e.Message);
-            }    
-                
-        }   
-
+       
         /// <summary>
         /// Запрос поиска клиента по ID
         /// </summary>

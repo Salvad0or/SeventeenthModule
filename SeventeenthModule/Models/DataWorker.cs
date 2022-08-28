@@ -21,10 +21,6 @@ namespace SeventeenthModule.Models
 
         protected static ShowTextMessage Show;
 
-          // под удаление
-        public DataSet DataSet { get; protected set; }
-      
-
         #endregion
 
         #region Конструкторы

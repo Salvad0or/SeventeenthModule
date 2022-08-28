@@ -265,7 +265,7 @@
 
                     <TabItem Header="Все заказы">
 
-                        <DataGrid ItemsSource="{Binding SqlJoin.AllOrdersTable}"
+                        <DataGrid ItemsSource="{Binding AllOrdersTable}"
                                   AutoGenerateColumns="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id Клиента" Binding="{Binding Id}"/>

@@ -20,7 +20,7 @@ namespace SeventeenthModule.Models
         /// <param name="mass"></param>
         /// <param name="id"></param>
         /// <param name="JoinTable"></param>
-        public void InsertDataInOrders(int[] mass, int id, JoinCommands JoinTable)
+        public void InsertDataInOrders(int[] mass, int id)
         {
             try
             {

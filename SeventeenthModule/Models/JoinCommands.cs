@@ -40,7 +40,6 @@ namespace SeventeenthModule.Models
         {
         }
         
-
         #endregion
 
         #region Методы
@@ -98,7 +97,7 @@ namespace SeventeenthModule.Models
         /// <summary>
         /// Заполнение таблицы для всех заказов
         /// </summary>
-        public void InitializeJoinTableByAllOrders ()
+        public List<JoinCommands> InitializeJoinTableByAllOrders ()
         {
             try
             {
@@ -123,11 +122,14 @@ namespace SeventeenthModule.Models
                                          Clientid = o.Clientid ?? default
                                      }).ToList();
                 }
+
+                return AllOrdersTable;
             }
             catch (Exception e)
             {
 
                 Show?.Invoke(e.Message);
+                return null;
             }
 
         }

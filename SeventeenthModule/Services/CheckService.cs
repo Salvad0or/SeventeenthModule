@@ -92,13 +92,15 @@ namespace SeventeenthModule.Services
         /// <param name="select"></param>
         /// <param name="TableName"></param>
         /// <returns></returns>
-        public bool CheckTableName(SelectCommands select,string TableName)
+        public bool CheckTableName(string TableName)
         {
             string name = TableName ??= String.Empty;
 
-            for (int i = 0; i < select.TablesNames.Length; i++)
+            if (!(name == String.Empty))
             {
-                if (Equals(select.TablesNames[i].ToLower(), name.ToLower())) return true;               
+                if (Equals(nameof(Order).ToLower(), name.ToLower())) return true;
+                else if (Equals(nameof(Product).ToLower(), name.ToLower())) return true;
+                else if (Equals(nameof(EntityClient).ToLower(), name.ToLower())) return true;
             }
 
             return false;
