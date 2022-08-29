@@ -10,6 +10,8 @@ namespace SeventeenthModule.EntityObjects
         public int? ProductId { get; set; }
         public int? Clientid { get; set; }
 
+        public int Migrate { get; set; }
+
         public virtual EntityClient? Client { get; set; }
         public virtual Product? Product { get; set; }
     }

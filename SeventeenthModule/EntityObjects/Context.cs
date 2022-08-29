@@ -9,6 +9,7 @@ namespace SeventeenthModule.EntityObjects
     {
         public Context()
         {
+            Database.Migrate();
         }
 
         public Context(DbContextOptions<Context> options)
